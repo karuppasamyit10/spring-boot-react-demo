@@ -5,7 +5,7 @@ import { PATH } from "../../utils/Constants";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { showNotification } from "../../actions/NotificationAction";
-import { getuserList, deleteSavedSearch , changeMemberShip} from "../../actions/searchAction";
+import { getuserList, deleteSavedSearch, changeMemberShip } from "../../actions/searchAction";
 import ReactPaginate from "react-paginate";
 
 class userList extends Component {
@@ -20,7 +20,7 @@ class userList extends Component {
       pageNo: 1,
       itemsPerPage: 5,
       total: 0,
-      
+
       search: ""
     };
   }
@@ -53,7 +53,7 @@ class userList extends Component {
       console.log(response);
       if (response && response.response_code === 0) {
         const { totalRecords, userList } = response.response;
-        this.setState({ total: totalRecords , userList: userList });
+        this.setState({ total: totalRecords, userList: userList });
       }
     });
   };
@@ -100,12 +100,17 @@ class userList extends Component {
       membershipTypeId
     };
     this.props.changeMemberShip(params, response => {
-      console.log(response);
+      if (response && response.response_code === 0) {
+        this.props.showNotification("Updated successfully", "success");
+        this.getuserList();
+      } else {
+        this.props.showNotification(response.response_message, "error");
+      }
     });
   };
 
   render() {
-    const { userList,total, todosPerPage } = this.state;
+    const { userList, total, todosPerPage } = this.state;
     const pageDisplayCount = Math.ceil(total / todosPerPage);
     return (
       <React.Fragment>
@@ -129,141 +134,104 @@ class userList extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>test</td>
-                            <td>email@gmail.com</td>
-                            <td>+91 896789789</td>
-                            <td>
-                              <div
-                                class=""
-                                role="group"
-                                aria-label="Basic example"
-                              >
-                                <button
-                                  type="button"
-                                  class="btn btn-info btn-sm mr-2"
-                                  onClick={()=>{this.changeMemberShip(1,1)}}
-                                >
-                                  BASIC
-                                </button>
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary btn-sm mr-2"
-                                  onClick={()=>{this.changeMemberShip(1,2)}}
-                                >
-                                  SILVER
-                                </button>
-                                <button
-                                  type="button"
-                                  class="btn btn-warning btn-sm mr-2"
-                                  onClick={()=>{this.changeMemberShip(1,3)}}
-                                >
-                                  GOLD
-                                </button>
-                                <button
-                                  type="button"
-                                  class="btn btn-success btn-sm mr-2"
-                                  onClick={()=>{this.changeMemberShip(1,4)}}
-                                >
-                                  VIP
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
+
                           {userList && userList.length ? (
-                            userList.map((list, index) => {
+                            userList.map((user, index) => {
                               return (
                                 <tr>
                                   <th scope="row">{index + 1}</th>
-                                  <td>
-                                    {list.vehicleName ? list.vehicleName : ""}
-                                  </td>
-                                  <td>
-                                    357 Great Deals out of 7,942 listings
-                                    starting at $1,100
-                                  </td>
-                                  <td>USD 970</td>
+                                  <td>{user.name}</td>
+                                  <td>{user.email}</td>
+                                  <td>{user.mobile_number}</td>
+                                  <td>{user.membershipId==1?'BASIC':user.membershipId==2?'SILVER':
+                                  user.membershipId==3?'GOLD':user.membershipId==4?'VIP':''}</td>
                                   <td>
                                     <div
-                                      class="btn-group"
+                                      class=""
                                       role="group"
                                       aria-label="Basic example"
                                     >
                                       <button
                                         type="button"
-                                        class="btn btn-primary"
-                                        onClick={() => {
-                                          this.searchDetails(list.vehicleId);
-                                        }}
+                                        class="btn btn-info btn-sm mr-2"
+                                        onClick={() => { this.changeMemberShip(user.userId, 1) }}
                                       >
-                                        View
-                                      </button>
+                                        BASIC
+                                </button>
                                       <button
                                         type="button"
-                                        class="btn btn-danger"
-                                        onClick={() => {
-                                          this.deleteSavedSearch(
-                                            list.vehicleId,
-                                            list.savedSearchId
-                                          );
-                                        }}
+                                        class="btn btn-secondary btn-sm mr-2"
+                                        onClick={() => { this.changeMemberShip(user.userId, 2) }}
                                       >
-                                        Delete
-                                      </button>
+                                        SILVER
+                                </button>
+                                      <button
+                                        type="button"
+                                        class="btn btn-warning btn-sm mr-2"
+                                        onClick={() => { this.changeMemberShip(user.userId, 3) }}
+                                      >
+                                        GOLD
+                                </button>
+                                      <button
+                                        type="button"
+                                        class="btn btn-success btn-sm mr-2"
+                                        onClick={() => { this.changeMemberShip(user.userId, 4) }}
+                                      >
+                                        VIP
+                                </button>
                                     </div>
                                   </td>
                                 </tr>
                               );
                             })
                           ) : (
-                            <tr className="text-center">
-                              <td colspan="12">No items found</td>
-                            </tr>
-                          )}
+                              <tr className="text-center">
+                                <td colspan="12">No items found</td>
+                              </tr>
+                            )}
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </div>
                 {pageDisplayCount > 1 ? (
-                    <div className="totalresults py-3 mt-3">
-                      <div className="row align-items-center">
-                        <div className="col-md-6">
-                          <span className="bold">
-                            {this.state.offset} - {pageDisplayCount}
-                          </span>{" "}
-                          out of <span className="bold">{pageDisplayCount}</span>{" "}
-                          listings
+                  <div className="totalresults py-3 mt-3">
+                    <div className="row align-items-center">
+                      <div className="col-md-6">
+                        <span className="bold">
+                          {this.state.offset} - {pageDisplayCount}
+                        </span>{" "}
+                        out of <span className="bold">{pageDisplayCount}</span>{" "}
+                        listings
                         </div>
-                        <div className="col-md-6">
-                          <ReactPaginate
-                            previousLabel={"previous"}
-                            nextLabel={"next"}
-                            breakLabel={"..."}
-                            breakClassName={"break-me"}
-                            pageCount={pageDisplayCount}
-                            marginPagesDisplayed={2}
-                            pageRangeDisplayed={5}
-                            onPageChange={this.handlePageClick}
-                            containerClassName={
-                              "pagination justify-content-end"
-                            }
-                            subContainerClassName={"page-item"}
-                            activeClassName={"page-item active"}
-                            pageLinkClassName={"page-link"}
-                            nextLinkClassName={"page-link"}
-                            previousLinkClassName={"page-link"}
-                            nextClassName={"page-item"}
-                            previousClassName={"page-item"}
-                            disabledClassName={"disabled"}
-                          />
-                        </div>
+                      <div className="col-md-6">
+                        <ReactPaginate
+                          previousLabel={"previous"}
+                          nextLabel={"next"}
+                          breakLabel={"..."}
+                          breakClassName={"break-me"}
+                          pageCount={pageDisplayCount}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={this.handlePageClick}
+                          containerClassName={
+                            "pagination justify-content-end"
+                          }
+                          subContainerClassName={"page-item"}
+                          activeClassName={"page-item active"}
+                          pageLinkClassName={"page-link"}
+                          nextLinkClassName={"page-link"}
+                          previousLinkClassName={"page-link"}
+                          nextClassName={"page-item"}
+                          previousClassName={"page-item"}
+                          disabledClassName={"disabled"}
+                        />
                       </div>
                     </div>
-                  ) : (
-                      ""
-                    )}
+                  </div>
+                ) : (
+                    ""
+                  )}
               </div>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { PATH } from "../../utils/Constants";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { showNotification } from "../../actions/NotificationAction";
-import { getWaitingApprovalList, deleteSavedSearch } from "../../actions/searchAction";
+import { getWaitingApprovalList, deleteSavedSearch, changeProuctApproval} from "../../actions/searchAction";
 
 class waitingApproval extends Component {
   constructor(props) {
@@ -45,11 +45,25 @@ class waitingApproval extends Component {
     this.props.getWaitingApprovalList(params, response => {
       console.log(response);
       if (response && response.response_code === 0) {
-        this.setState({ userList: response.response.userList });
+        this.setState({ userList: response.response.pendingApprovalList });
       }
     });
   };
 
+  changeProuctApproval = (vehicleId, approvedStatus) => {
+    const params = {
+      vehicleId,
+      approvedStatus
+    };
+    this.props.changeProuctApproval(params, response => {
+      if (response && response.response_code === 0) {
+        this.props.showNotification("Updated successfully", "success");
+        this.getuserList();
+      } else {
+        this.props.showNotification(response.response_message, "error");
+      }
+    });
+  };
   deleteSavedSearch = (vehicleId, savedSearchId) => {
     let formData = new FormData();
     formData.append("vehicleId", vehicleId);
@@ -111,10 +125,9 @@ class waitingApproval extends Component {
                                     {list.vehicleName ? list.vehicleName : ""}
                                   </td>
                                   <td>
-                                    357 Great Deals out of 7,942 listings
-                                    starting at $1,100
+                                  {list.modelDetail} {list.conditionType}
                                   </td>
-                                  <td>USD 970</td>
+                                  <td>{list.price}</td>
                                   <td>
                                     <div
                                       class="btn-group"
@@ -124,11 +137,9 @@ class waitingApproval extends Component {
                                       <button
                                         type="button"
                                         class="btn btn-primary"
-                                        onClick={() => {
-                                          this.searchDetails(list.vehicleId);
-                                        }}
+                                        onClick={() => { this.changeProuctApproval(list.vehicleId, 1) }}
                                       >
-                                        View
+                                        Approve
                                       </button>
                                       <button
                                         type="button"
@@ -173,6 +184,9 @@ const mapDispatchToProps = dispatch => {
     },
     deleteSavedSearch: (params, callback) => {
       dispatch(deleteSavedSearch(params, callback));
+    },
+    changeProuctApproval: (params, callback) => {
+      dispatch(changeProuctApproval(params, callback));
     },
     showNotification: (message, type) => {
       dispatch(showNotification(message, type));

@@ -12,5 +12,5 @@ public interface MemberShipTypeRepository extends JpaRepository<MemberShipType, 
 
 	List<MemberShipType> findByIsDeletedOrderByMembershipTypeAsc(int isDeleted);
 	
-	MemberShipType findByMembershipTypeIdAndIsDeleted(long membershipTypeId, int isDeleted);
+	MemberShipType findByMembershipTypeIdAndIsDeleted(int membershipTypeId, int isDeleted);
 }

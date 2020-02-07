@@ -19,6 +19,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -1011,7 +1012,7 @@ public class AdminController {
 				Map<String, Object> params = new LinkedHashMap<String, Object>();
 				params.put("userId", user.getUserId());
 				params.put("membershipId", user.getMembershipId());
-				params.put("username", user.getUserName());
+				params.put("email", user.getEmail());
 				params.put("name", user.getName());
 				params.put("mobile_number", user.getMobileNumber());
 				userListObj.add(params);
@@ -1028,12 +1029,41 @@ public class AdminController {
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/get/pending/approvallist", produces = "application/json")
+	@RequestMapping(method = RequestMethod.PUT, value = "/update/membership", produces = "application/json", consumes= "application/json")
 	@ResponseBody
-	public Map<?, ?> getPendingApprovalList(VehicleRegisterBean vehicleRegisterBean) throws Exception 
+	public Map<?, ?> updateMembershipByUserId(@RequestBody VehicleRegisterBean vehicleRegisterBean) throws Exception 
 	{
-		logger.info("Controller==>Enter==>getPendingApprovalList<==");
-		String methodName = "GET PENDING APPROVAL LIST";
+		logger.info("Controller==>Enter==>updateMembershipByUserId<==");
+		String methodName = "UPDATE MEMBERSHIP BY USERID";
+		User user = null;
+		MemberShipType memberShipTypeObj = null;
+		try 
+		{
+			user = userRepository.findByUserId(vehicleRegisterBean.getUserId());
+			if(user==null){
+				 return CommonUtil.wrapResultResponse(methodName, 1, "Invalid user", null);
+			}
+			memberShipTypeObj = memberShipTypeRepository.findByMembershipTypeIdAndIsDeleted(vehicleRegisterBean.getMembershipTypeId(), 0);
+			if(memberShipTypeObj==null){
+				 return CommonUtil.wrapResultResponse(methodName, 1, "Invalid membership type", null);
+			}
+			user.setMembershipId(memberShipTypeObj.getMembershipTypeId());
+			userRepository.save(user);
+			logger.info("Controller==>Exit==>updateMembershipByUserId<==");
+		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			 logger.info("Controller==>Exception==>getUsersList<==");
+			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller updateMembershipByUserId", null);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/get/product/approval/list", produces = "application/json")
+	@ResponseBody
+	public Map<?, ?> getProdcutApprovalList(VehicleRegisterBean vehicleRegisterBean) throws Exception 
+	{
+		logger.info("Controller==>Enter==>getProdcutApprovalList<==");
+		String methodName = "GET PRODUCT APPROVAL LIST";
 		List<Object> vehicleDetailListObj = new LinkedList<>();
 		Page<VehicleDetail> vehicleList = null;
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
@@ -1076,51 +1106,22 @@ public class AdminController {
 			}
 			response.put("totalRecords", vehicleList.getTotalElements());
 			response.put("totalPages", vehicleList.getTotalPages());
-			response.put("vehicleDetailList", vehicleDetailListObj);
-			logger.info("Controller==>Exit==>getPendingApprovalList<==");
+			response.put("pendingApprovalList", vehicleDetailListObj);
+			logger.info("Controller==>Exit==>getProdcutApprovalList<==");
 		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			 logger.info("Controller==>Exception==>getPendingApprovalList<==");
-			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller getPendingApprovalList", null);
+			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller getProdcutApprovalList", null);
 		}
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT, value = "/update/membership", produces = "application/json")
+	@RequestMapping(method = RequestMethod.PUT, value = "/update/product/approval", produces = "application/json", consumes= "application/json")
 	@ResponseBody
-	public Map<?, ?> changeMembershipByUserId(long userId, int membershipTypeId) throws Exception 
+	public Map<?, ?> updateProductApproval(@RequestBody VehicleRegisterBean vehicleRegisterBean) throws Exception 
 	{
-		logger.info("Controller==>Enter==>changeMembershipByUserId<==");
-		String methodName = "CHANGE MEMBERSHIP BY USERID";
-		User user = null;
-		MemberShipType memberShipTypeObj = null;
-		try 
-		{
-			user = userRepository.findByUserId(userId);
-			if(user==null){
-				 return CommonUtil.wrapResultResponse(methodName, 1, "Invalid user", null);
-			}
-			memberShipTypeObj = memberShipTypeRepository.findByMembershipTypeIdAndIsDeleted(membershipTypeId, 0);
-			if(memberShipTypeObj==null){
-				 return CommonUtil.wrapResultResponse(methodName, 1, "Invalid membership type", null);
-			}
-			user.setMembershipId(memberShipTypeObj.getMembershipTypeId());
-			userRepository.save(user);
-			logger.info("Controller==>Exit==>changeMembershipByUserId<==");
-		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			 logger.info("Controller==>Exception==>getUsersList<==");
-			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller changeMembershipByUserId", null);
-		}
-	}
-	
-	@RequestMapping(method = RequestMethod.PUT, value = "/update/product_approval", produces = "application/json")
-	@ResponseBody
-	public Map<?, ?> updateProductApprovalStatus(VehicleRegisterBean vehicleRegisterBean) throws Exception 
-	{
-		logger.info("Controller==>Enter==>updateProductApprovalStatus<==");
-		String methodName = "UPDATE PRODUCT APPROVAL STATUS";
+		logger.info("Controller==>Enter==>updateProductApproval<==");
+		String methodName = "UPDATE PRODUCT APPROVAL";
 		try 
 		{
 			VehicleDetail vehicleDetail = vehicleDetailRepository.findByVehicleIdAndApprovedStatusAndIsDeleted(vehicleRegisterBean.getVehicleId(), 0, 0);
@@ -1129,12 +1130,12 @@ public class AdminController {
 			}
 			vehicleDetail.setApprovedStatus(vehicleRegisterBean.getApprovedStatus());
 			vehicleDetailRepository.save(vehicleDetail);
-			logger.info("Controller==>Exit==>updateProductApprovalStatus<==");
+			logger.info("Controller==>Exit==>updateProductApproval<==");
 		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			 logger.info("Controller==>Exception==>getUsersList<==");
-			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller updateProductApprovalStatus", null);
+			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller updateProductApproval", null);
 		}
 	}
 	

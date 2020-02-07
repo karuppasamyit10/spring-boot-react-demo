@@ -147,10 +147,23 @@ export function getuserList(params, callback) {
   };
 }
 
-
 export function changeMemberShip(params,callback){
   return function(dispatch) {
     Client.put(URL.CHANGE_MEMBERSHIP, params, true)
+      .then(response => {
+        console.log(response);
+        myLog("====update membeship response===::::", response);
+        callback(response);
+      })
+      .catch(error => {
+        myLog("====update member ship response===????", error);
+      });
+  };
+}
+
+export function changeProuctApproval(params,callback){
+  return function(dispatch) {
+    Client.put(URL.CHANGE_PRODUCT_APPROVAL, params, true)
       .then(response => {
         console.log(response);
         myLog("====update membeship response===::::", response);

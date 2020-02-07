@@ -848,7 +848,7 @@ class ProductRegistrationForm extends Component {
                               ? this.state.preview.map((item,index) => {
                                   return (
                                     <div class="prevfile col">
-                                      <a href="javascript:;" class="removefile" onClick={()=>{this.removePhoto(index)}}>
+                                      <a  class="removefile" onClick={()=>{this.removePhoto(index)}}>
                                         <i class="fas fa-times-circle"></i>
                                       </a>
                                       <img

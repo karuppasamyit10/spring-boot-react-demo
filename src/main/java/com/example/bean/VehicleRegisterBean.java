@@ -41,6 +41,7 @@ public class VehicleRegisterBean {
 	private int itemsPerPage;
 	
 	private int vehicleTypeId;
+	private int membershipTypeId;
 	
 	private long vehicleId;
 	private int approvedStatus;
@@ -552,4 +553,19 @@ public class VehicleRegisterBean {
 	public void setApprovedStatus(int approvedStatus) {
 		this.approvedStatus = approvedStatus;
 	}
+
+	/**
+	 * @return the membershipTypeId
+	 */
+	public int getMembershipTypeId() {
+		return membershipTypeId;
+	}
+
+	/**
+	 * @param membershipTypeId the membershipTypeId to set
+	 */
+	public void setMembershipTypeId(int membershipTypeId) {
+		this.membershipTypeId = membershipTypeId;
+	}
+	
 }

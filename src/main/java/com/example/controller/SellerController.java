@@ -69,28 +69,28 @@ public class SellerController {
 			if(userId==0){
 				return CommonUtil.wrapResultResponse(methodName, 1, "Access token required", null);
 			}
-			if(vehicleRegisterBean!=null){
-				vehicleDetail = new VehicleDetail();
-				vehicleDetail.setVehicleTypeId(vehicleRegisterBean.getVehicleTypeId());
-				vehicleDetail.setUserId(userId);
-				vehicleDetail.setBrand(vehicleRegisterBean.getBrand());
-				vehicleDetail.setModel(vehicleRegisterBean.getModel());
-				vehicleDetail.setModelDetail(vehicleRegisterBean.getModelDetail());
-				vehicleDetail.setTransmissionType(vehicleRegisterBean.getTransmissionType());
-				vehicleDetail.setFuelType(vehicleRegisterBean.getFuelType());
-				vehicleDetail.setSteeringType(vehicleRegisterBean.getSteeringType());
-				vehicleDetail.setEngineType(vehicleRegisterBean.getEngineType());
-				vehicleDetail.setSeatsType(vehicleRegisterBean.getSeatsType());
-				vehicleDetail.setConditionType(vehicleRegisterBean.getConditionType());
-				vehicleDetail.setDealsType(vehicleRegisterBean.getDealsType());
-				vehicleDetail.setMembershipType(vehicleRegisterBean.getMembershipType());
-				vehicleDetail.setCountry(vehicleRegisterBean.getCountry());
-				vehicleDetail.setPrice(Long.parseLong(vehicleRegisterBean.getPrice()));
-				vehicleDetail.setYear(Integer.parseInt(vehicleRegisterBean.getYear()));
-				vehicleDetail.setMileage(Long.parseLong(vehicleRegisterBean.getMileage()));
-				vehicleDetail = vehicleDetailRepository.save(vehicleDetail);
-			}
-			if(vehicleDetail!=null){
+//			if(vehicleRegisterBean!=null){
+//				vehicleDetail = new VehicleDetail();
+//				vehicleDetail.setVehicleTypeId(vehicleRegisterBean.getVehicleTypeId());
+//				vehicleDetail.setUserId(userId);
+//				vehicleDetail.setBrand(vehicleRegisterBean.getBrand());
+//				vehicleDetail.setModel(vehicleRegisterBean.getModel());
+//				vehicleDetail.setModelDetail(vehicleRegisterBean.getModelDetail());
+//				vehicleDetail.setTransmissionType(vehicleRegisterBean.getTransmissionType());
+//				vehicleDetail.setFuelType(vehicleRegisterBean.getFuelType());
+//				vehicleDetail.setSteeringType(vehicleRegisterBean.getSteeringType());
+//				vehicleDetail.setEngineType(vehicleRegisterBean.getEngineType());
+//				vehicleDetail.setSeatsType(vehicleRegisterBean.getSeatsType());
+//				vehicleDetail.setConditionType(vehicleRegisterBean.getConditionType());
+//				vehicleDetail.setDealsType(vehicleRegisterBean.getDealsType());
+//				vehicleDetail.setMembershipType(vehicleRegisterBean.getMembershipType());
+//				vehicleDetail.setCountry(vehicleRegisterBean.getCountry());
+//				vehicleDetail.setPrice(Long.parseLong(vehicleRegisterBean.getPrice()));
+//				vehicleDetail.setYear(Integer.parseInt(vehicleRegisterBean.getYear()));
+//				vehicleDetail.setMileage(Long.parseLong(vehicleRegisterBean.getMileage()));
+//				vehicleDetail = vehicleDetailRepository.save(vehicleDetail);
+//			}
+//			if(vehicleDetail!=null){
 				Map<String, MultipartFile> fileMap = request.getFileMap();
 				for(MultipartFile mFile : fileMap.values()) 
 				{
@@ -124,7 +124,7 @@ public class SellerController {
 			        	vehicleDetailRepository.save(vehicleDetail);
 		        	}
 				} 
-			}
+//			}
 			return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
 		} catch (Exception e) {
 			e.printStackTrace();

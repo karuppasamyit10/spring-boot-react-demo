@@ -44,6 +44,7 @@ module.exports = {
   DELETE_SAVED_SEARCH: '/api/public/delete/savedmysearches',
   GET_SAVED_SEARCH: '/api/public/getAll/savedmysearches',
   GET_ADMIN_USER_LIST: '/api/admin/get/userlist',
-  GET_APPROVAL_LIST: '/api/admin/get/pending/approvallist',
-  CHANGE_MEMBERSHIP: '/api/admin/update/membership'
+  GET_APPROVAL_LIST: '/api/admin/get/product/approval/list',
+  CHANGE_PRODUCT_APPROVAL: '/api/admin/update/product/approval',
+  CHANGE_MEMBERSHIP: '/api/admin/update/membership',
 }; 
