@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { showNotification } from "../../actions/NotificationAction";
 import { getuserList, deleteSavedSearch , changeMemberShip} from "../../actions/searchAction";
+import ReactPaginate from "react-paginate";
 
 class userList extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class userList extends Component {
       pageNo: 1,
       itemsPerPage: 5,
       total: 0,
+      
       search: ""
     };
   }
@@ -43,11 +45,24 @@ class userList extends Component {
       pageNo,
       itemsPerPage
     };
+    // let formData = new FormData();
+    // formData.append("search", search);
+    // formData.append("itemsPerPage", itemsPerPage);
+    // formData.append("pageNo", pageNo);
     this.props.getuserList(params, response => {
       console.log(response);
       if (response && response.response_code === 0) {
-        this.setState({ userList: response.response.userList });
+        const { totalRecords, userList } = response.response;
+        this.setState({ total: totalRecords , userList: userList });
       }
+    });
+  };
+
+  handlePageClick = data => {
+    let selected = data.selected;
+    let offset = Math.ceil(selected + 1);
+    this.setState({ offset: offset }, () => {
+      this.getuserList();
     });
   };
 
@@ -90,7 +105,8 @@ class userList extends Component {
   };
 
   render() {
-    const { userList } = this.state;
+    const { userList,total, todosPerPage } = this.state;
+    const pageDisplayCount = Math.ceil(total / todosPerPage);
     return (
       <React.Fragment>
         <section class="">
@@ -210,6 +226,44 @@ class userList extends Component {
                     </div>
                   </div>
                 </div>
+                {pageDisplayCount > 1 ? (
+                    <div className="totalresults py-3 mt-3">
+                      <div className="row align-items-center">
+                        <div className="col-md-6">
+                          <span className="bold">
+                            {this.state.offset} - {pageDisplayCount}
+                          </span>{" "}
+                          out of <span className="bold">{pageDisplayCount}</span>{" "}
+                          listings
+                        </div>
+                        <div className="col-md-6">
+                          <ReactPaginate
+                            previousLabel={"previous"}
+                            nextLabel={"next"}
+                            breakLabel={"..."}
+                            breakClassName={"break-me"}
+                            pageCount={pageDisplayCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={this.handlePageClick}
+                            containerClassName={
+                              "pagination justify-content-end"
+                            }
+                            subContainerClassName={"page-item"}
+                            activeClassName={"page-item active"}
+                            pageLinkClassName={"page-link"}
+                            nextLinkClassName={"page-link"}
+                            previousLinkClassName={"page-link"}
+                            nextClassName={"page-item"}
+                            previousClassName={"page-item"}
+                            disabledClassName={"disabled"}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                      ""
+                    )}
               </div>
             </div>
           </div>
