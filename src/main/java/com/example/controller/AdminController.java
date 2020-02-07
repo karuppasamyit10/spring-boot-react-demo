@@ -996,17 +996,17 @@ public class AdminController {
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/get/userlist", produces = "application/json")
 	@ResponseBody
-	public Map<?, ?> getUsersList(@RequestParam(defaultValue = "", value="search") String search) throws Exception 
+	public Map<?, ?> getUsersList(VehicleRegisterBean vehicleRegisterBean) throws Exception 
 	{
 		logger.info("Controller==>Enter==>getUsersList<==");
 		String methodName = "GET USERS LIST";
 		List<Object> userListObj = new LinkedList<>();
-		List<User> userList = null;
+		Page<User> userList = null;
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
 		try 
 		{
-			userList = userRepository.getUserListBySearch(search==null || search.isEmpty() ?"":search.trim());
-			for(User user : userList)
+			userList = userRepository.getUserListBySearch(vehicleRegisterBean.getSearch()==null || vehicleRegisterBean.getSearch().isEmpty() ?"":vehicleRegisterBean.getSearch().trim(), commonUtil.pageable(vehicleRegisterBean.getPageNo(), vehicleRegisterBean.getItemsPerPage()));
+			for(User user : userList.getContent())
 			{
 				Map<String, Object> params = new LinkedHashMap<String, Object>();
 				params.put("userId", user.getUserId());
@@ -1016,9 +1016,11 @@ public class AdminController {
 				params.put("mobile_number", user.getMobileNumber());
 				userListObj.add(params);
 			}
+			response.put("totalRecords", userList.getTotalElements());
+			response.put("totalPages", userList.getTotalPages());
 			response.put("userList", userListObj);
 			logger.info("Controller==>Exit==>getUsersList<==");
-		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
+		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			 logger.info("Controller==>Exception==>getUsersList<==");
@@ -1073,10 +1075,10 @@ public class AdminController {
 				vehicleDetailListObj.add(params);
 			}
 			response.put("totalRecords", vehicleList.getTotalElements());
-			response.put("total", vehicleList.getTotalPages());
+			response.put("totalPages", vehicleList.getTotalPages());
 			response.put("vehicleDetailList", vehicleDetailListObj);
 			logger.info("Controller==>Exit==>getPendingApprovalList<==");
-		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
+		    return CommonUtil.wrapResultResponse(methodName, 0, "Success", response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			 logger.info("Controller==>Exception==>getPendingApprovalList<==");
