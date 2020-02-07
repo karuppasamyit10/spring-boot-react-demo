@@ -1,0 +1,141 @@
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+spring:
+  resources:
+    static-locations:
+      - file:///D:/imgs/
+  data:
+    rest:
+      base-path: /api
+  application:
+    name: sb-demo-appln
+#  resources:
+#    static-locations:
+#      - file:/home/concertcare/auto-harasow/sb-demo-appln/react-web-app/web-src/build/
+  datasource:
+    url: jdbc:mysql://localdocker:3306/sb-demo-appln_final?createDatabaseIfNotExist=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull  
+    username: root
+    password: root
+    test-while-idle: true
+    test-on-borrow: true
+    validation-query: SELECT 1
+      
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+      
+  mail:
+    host: localhost
+    port: 587
+    username: karuppu 
+    password: demo
+    properties: 
+      mail.smtp.auth : true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.enable: true 
+  http:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  
+#  mvc:
+#    view:
+#      prefix: /
+#      suffix: .html
+  freemarker:
+    check-template-location: false   
+server:
+  port: 8181
+  contextPath: /
+  error:
+    whitelabel:
+      enabled: true
+  ssl:
+    key-store: 
+    enabled: false
+    key-store-password: 
+  max-http-header-size: 26843
+
+common:
+  config:
+    host-base-url: http://localhost:8181/
+    from-mail: support@example.com
+    https-socket-io: false
+    socket-io-port: 7070
+    static-locations: D:/imgs/
+    key-store-file-name: 
+    key-store-password:
+---
+endpoints:
+  shutdown:
+    enabled: true
+    sensitive: false
+spring:
+  resources:
+    static-locations:
+      - file:///home/ubuntu/sb-demo-app/imgs/
+  profiles: dev
+  application:
+    name: auto_harasow
+#  resources:
+#    static-locations:
+#      - file:/home/concertcare/auto-harasow/sb-demo-appln/react-web-app/web-src/build/
+  datasource:
+    url: jdbc:mysql://localhost:3306/auto_harasow?createDatabaseIfNotExist=true&autoReconnect=true&zeroDateTimeBehavior=convertToNull  
+    username: root
+    password: root
+    test-while-idle: true
+    test-on-borrow: true
+    validation-query: SELECT 1
+      
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+      
+  mail:
+    host: localhost
+    port: 587
+    username: karuppu 
+    password: demo
+    properties: 
+      mail.smtp.auth : true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.ssl.enable: true 
+  http:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  
+#  mvc:
+#    view:
+#      prefix: /
+#      suffix: .html
+  freemarker:
+    check-template-location: false   
+server:
+  port: 8181
+  contextPath: /
+  error:
+    whitelabel:
+      enabled: true
+  ssl:
+    key-store: 
+    enabled: false
+    key-store-password: 
+  max-http-header-size: 26843
+
+common:
+  config:
+    host-base-url: http://35.160.123.119:8181/
+    from-mail: support@example.com
+    https-socket-io: false
+    socket-io-port: 7070
+    static-locations: imgs/
+    key-store-file-name: 
+    key-store-password:

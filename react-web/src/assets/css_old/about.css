@@ -1,0 +1,98 @@
+.about_wrap .aboutgrid {
+  margin: 30px 0px 0px;
+}
+
+.about_wrap .aboutgrid p {
+  margin: 10px 0px 0px 0px;
+}
+
+.about_wrap .aboutgrid .readmore {
+  margin: 0px 0px 10px 0px;
+}
+
+.about_wrap .aboutgrid .readmore a {
+  color: #2ab94f;
+}
+
+.about_wrap .aboutgrid .readmore a:hover {
+  text-decoration: none;
+}
+
+.about_wrap .whatwedo {
+  margin-top: 20px;
+}
+
+.about_wrap .whatwedo .quotes {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.list-group-item-action:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #2ab94f;
+}
+
+.container_shipping .greybox {
+  background: #F5F6F8;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.container_shipping .greybox .insidegreybox {
+  background: #fff;
+  padding: 10px;
+}
+
+.container_shipping .benefits .icon {
+  max-width: 120px;
+  text-align: center;
+}
+
+@media screen and (max-width: 767px) {
+  .container_shipping .col-md-3.text-right {
+    text-align: center !important;
+  }
+  .container_shipping .btn {
+    white-space: normal;
+    margin-bottom: 10px;
+  }
+}
+
+.customertxt span {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  padding: 10px;
+  display: block;
+}
+
+@media screen and (max-width: 767px) {
+  .customertxt span {
+    position: relative;
+    color: #000;
+  }
+}
+
+.gurantees.bggrey {
+  background: #F5F6F8;
+}
+
+.parts {
+  text-align: left;
+}
+
+.parts .numbers {
+  color: #2ab94f;
+  font-size: 50px;
+  max-width: 100px;
+}
+
+@media screen and (max-width: 767px) {
+  .gurantees {
+    padding: 0px 10px;
+  }
+}
+/*# sourceMappingURL=about.css.map */
