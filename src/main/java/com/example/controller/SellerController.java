@@ -69,28 +69,82 @@ public class SellerController {
 			if(userId==0){
 				return CommonUtil.wrapResultResponse(methodName, 1, "Access token required", null);
 			}
-//			if(vehicleRegisterBean!=null){
-//				vehicleDetail = new VehicleDetail();
-//				vehicleDetail.setVehicleTypeId(vehicleRegisterBean.getVehicleTypeId());
-//				vehicleDetail.setUserId(userId);
-//				vehicleDetail.setBrand(vehicleRegisterBean.getBrand());
-//				vehicleDetail.setModel(vehicleRegisterBean.getModel());
-//				vehicleDetail.setModelDetail(vehicleRegisterBean.getModelDetail());
-//				vehicleDetail.setTransmissionType(vehicleRegisterBean.getTransmissionType());
-//				vehicleDetail.setFuelType(vehicleRegisterBean.getFuelType());
-//				vehicleDetail.setSteeringType(vehicleRegisterBean.getSteeringType());
-//				vehicleDetail.setEngineType(vehicleRegisterBean.getEngineType());
-//				vehicleDetail.setSeatsType(vehicleRegisterBean.getSeatsType());
-//				vehicleDetail.setConditionType(vehicleRegisterBean.getConditionType());
-//				vehicleDetail.setDealsType(vehicleRegisterBean.getDealsType());
-//				vehicleDetail.setMembershipType(vehicleRegisterBean.getMembershipType());
-//				vehicleDetail.setCountry(vehicleRegisterBean.getCountry());
-//				vehicleDetail.setPrice(Long.parseLong(vehicleRegisterBean.getPrice()));
-//				vehicleDetail.setYear(Integer.parseInt(vehicleRegisterBean.getYear()));
-//				vehicleDetail.setMileage(Long.parseLong(vehicleRegisterBean.getMileage()));
-//				vehicleDetail = vehicleDetailRepository.save(vehicleDetail);
-//			}
-//			if(vehicleDetail!=null){
+			if(vehicleRegisterBean.getVehicleTypeId()==0){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid vehicle type", null);
+			}
+			if(vehicleRegisterBean.getBrand()==null || vehicleRegisterBean.getBrand().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid brand", null);
+			}
+			if(vehicleRegisterBean.getModel()==null || vehicleRegisterBean.getModel().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid model", null);
+			}
+			if(vehicleRegisterBean.getModelDetail()==null ||  vehicleRegisterBean.getModelDetail().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid model details", null);
+			}
+			if(vehicleRegisterBean.getTransmissionType()==null ||  vehicleRegisterBean.getTransmissionType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid transmission type", null);
+			}
+			if(vehicleRegisterBean.getTransmissionType()==null ||  vehicleRegisterBean.getTransmissionType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid transmission type", null);
+			}
+			if(vehicleRegisterBean.getFuelType()==null || vehicleRegisterBean.getFuelType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid fuel type", null);
+			}
+			if(vehicleRegisterBean.getSteeringType()==null || vehicleRegisterBean.getSteeringType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid fuel type", null);
+			}
+			if(vehicleRegisterBean.getEngineType()==null || vehicleRegisterBean.getEngineType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid engine type", null);
+			}
+			if(vehicleRegisterBean.getSeatsType()==null || vehicleRegisterBean.getSeatsType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid seats type", null);
+			}
+			if(vehicleRegisterBean.getConditionType()==null || vehicleRegisterBean.getConditionType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid condition type", null);
+			}
+			if(vehicleRegisterBean.getDealsType()==null || vehicleRegisterBean.getDealsType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid deals type", null);
+			}
+			if(vehicleRegisterBean.getMembershipType()==null || vehicleRegisterBean.getMembershipType().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid membership type", null);
+			}
+			if(vehicleRegisterBean.getCountry()==null || vehicleRegisterBean.getCountry().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid country", null);
+			}
+			if(vehicleRegisterBean.getPrice()==null || vehicleRegisterBean.getPrice().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid price", null);
+			}
+			if(vehicleRegisterBean.getYear()==null || vehicleRegisterBean.getYear().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid year", null);
+			}
+			if(vehicleRegisterBean.getMileage()==null || vehicleRegisterBean.getMileage().isEmpty()){
+				return CommonUtil.wrapResultResponse(methodName, 1, "Invalid mileage", null);
+			}
+			vehicleDetail = vehicleDetailRepository.findByVehicleId(vehicleRegisterBean.getVehicleId());
+			if(vehicleRegisterBean!=null){
+				if(vehicleDetail == null){
+					vehicleDetail = new VehicleDetail();
+				}
+				vehicleDetail.setVehicleTypeId(vehicleRegisterBean.getVehicleTypeId());
+				vehicleDetail.setUserId(userId);
+				vehicleDetail.setBrand(vehicleRegisterBean.getBrand());
+				vehicleDetail.setModel(vehicleRegisterBean.getModel());
+				vehicleDetail.setModelDetail(vehicleRegisterBean.getModelDetail());
+				vehicleDetail.setTransmissionType(vehicleRegisterBean.getTransmissionType());
+				vehicleDetail.setFuelType(vehicleRegisterBean.getFuelType());
+				vehicleDetail.setSteeringType(vehicleRegisterBean.getSteeringType());
+				vehicleDetail.setEngineType(vehicleRegisterBean.getEngineType());
+				vehicleDetail.setSeatsType(vehicleRegisterBean.getSeatsType());
+				vehicleDetail.setConditionType(vehicleRegisterBean.getConditionType());
+				vehicleDetail.setDealsType(vehicleRegisterBean.getDealsType());
+				vehicleDetail.setMembershipType(vehicleRegisterBean.getMembershipType());
+				vehicleDetail.setCountry(vehicleRegisterBean.getCountry());
+				vehicleDetail.setPrice(Long.parseLong(vehicleRegisterBean.getPrice()));
+				vehicleDetail.setYear(Integer.parseInt(vehicleRegisterBean.getYear()));
+				vehicleDetail.setMileage(Long.parseLong(vehicleRegisterBean.getMileage()));
+				vehicleDetail = vehicleDetailRepository.save(vehicleDetail);
+			}
+			if(vehicleDetail!=null){
 				Map<String, MultipartFile> fileMap = request.getFileMap();
 				for(MultipartFile mFile : fileMap.values()) 
 				{
@@ -124,7 +178,7 @@ public class SellerController {
 			        	vehicleDetailRepository.save(vehicleDetail);
 		        	}
 				} 
-//			}
+			}
 			return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
 		} catch (Exception e) {
 			e.printStackTrace();

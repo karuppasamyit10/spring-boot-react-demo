@@ -814,9 +814,14 @@ public class CommonDaoImpl implements CommonDao {
 				Predicate dealTypeConditionPredicate = dealTypeExp.in(vehicleSearchBean.getDealsType());
 				listPredicate.add(dealTypeConditionPredicate);
 			}
-			Expression<String> dealTypeExp = vehicleRoot.get("isDeleted");
-			Predicate isDeletedConditionPredicate = dealTypeExp.in(0);
+			Expression<String> isDeletedExp = vehicleRoot.get("isDeleted");
+			Predicate isDeletedConditionPredicate = isDeletedExp.in(0);
 			listPredicate.add(isDeletedConditionPredicate);
+			
+			Expression<String> approvedStatusExp = vehicleRoot.get("approvedStatus");
+			Predicate  approvedStatusConditionPredicate = approvedStatusExp.in(1);
+			listPredicate.add(approvedStatusConditionPredicate);
+			
 //			if(vehicleSearchBean.getFromYear()!=null && !vehicleSearchBean.getFromYear().isEmpty() && !vehicleSearchBean.getFromYear().equalsIgnoreCase("null")
 //					&& vehicleSearchBean.getToYear()!=null && !vehicleSearchBean.getToYear().isEmpty() && !vehicleSearchBean.getToYear().equalsIgnoreCase("null"))
 //			{
