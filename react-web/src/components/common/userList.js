@@ -15,7 +15,7 @@ class userList extends Component {
       userList: [],
       limit: 5,
       todosPerPage: 5,
-      offset: 1,
+      offset: 0,
       isModelOpen: 0,
       pageNo: 1,
       itemsPerPage: 5,
@@ -60,8 +60,9 @@ class userList extends Component {
 
   handlePageClick = data => {
     let selected = data.selected;
-    let offset = Math.ceil(selected + 1);
-    this.setState({ offset: offset }, () => {
+    let pageNo = Math.ceil(selected + 1);
+    let offset = Math.ceil(selected * this.state.todosPerPage);
+    this.setState({ offset: offset, pageNo }, () => {
       this.getuserList();
     });
   };
@@ -110,7 +111,7 @@ class userList extends Component {
   };
 
   render() {
-    const { userList, total, todosPerPage } = this.state;
+    const { userList, total, todosPerPage,offset } = this.state;
     const pageDisplayCount = Math.ceil(total / todosPerPage);
     return (
       <React.Fragment>
@@ -139,12 +140,12 @@ class userList extends Component {
                             userList.map((user, index) => {
                               return (
                                 <tr>
-                                  <th scope="row">{index + 1}</th>
+                                  <th scope="row">{offset + index + 1}</th>
                                   <td>{user.name}</td>
                                   <td>{user.email}</td>
                                   <td>{user.mobile_number}</td>
-                                  <td>{user.membershipId==1?'BASIC':user.membershipId==2?'SILVER':
-                                  user.membershipId==3?'GOLD':user.membershipId==4?'VIP':''}</td>
+                                  <td>{user.membershipId === 1 ? 'BASIC':user.membershipId === 2 ?'SILVER':
+                                  user.membershipId === 3 ? 'GOLD':user.membershipId === 4 ?'VIP':'' }</td>
                                   <td>
                                     <div
                                       class=""
@@ -199,7 +200,7 @@ class userList extends Component {
                     <div className="row align-items-center">
                       <div className="col-md-6">
                         <span className="bold">
-                          {this.state.offset} - {pageDisplayCount}
+                          {this.state.pageNo} - {pageDisplayCount}
                         </span>{" "}
                         out of <span className="bold">{pageDisplayCount}</span>{" "}
                         listings

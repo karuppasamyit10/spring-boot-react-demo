@@ -22,9 +22,9 @@ class ProductRegistrationForm extends Component {
       userInfo: store.get("userSession"),
       isdisable: false,
       input_object: {
-        files: [],
         vehicleTypeId: 1,
       },
+      files: [],
       preview: [],
       master: {}
     };
@@ -69,16 +69,16 @@ class ProductRegistrationForm extends Component {
   handleImageRead = e => {
     e.preventDefault();
     let preview = this.state.preview;
-    let input_object = this.state.input_object;
-    let files = input_object.files ? input_object.files : [];
+    let filesArray = this.state.files;
+    let files = filesArray ? filesArray : [];
     const reader = new FileReader();
     const file = e.target.files[0];
 
     files.push(file);
-    input_object.files = files;
+    filesArray = files;
     this.setState(
       {
-        input_object: input_object
+        files: filesArray
       },
       () => {
         console.log(this.state);
@@ -98,12 +98,10 @@ class ProductRegistrationForm extends Component {
   };
   removePhoto = (index) => {
     let preview = this.state.preview ? this.state.preview : [];
-    let input_object = this.state.input_object;
-    let files = input_object.files ? input_object.files : []; 
+    let files = this.state.files ? this.state.files : [];
     files.splice(index,1);
     preview.splice(index,1);
-    input_object.files = files;
-    this.setState({preview, input_object});
+    this.setState({preview, files});
   }
 
   handleOnChange = e => {
@@ -112,16 +110,20 @@ class ProductRegistrationForm extends Component {
     let { name, value } = target;
     if (name === "image") {
       this.handleImageRead(e);
+    }else{
+      input_object[name] = value;
+      this.setState({ input_object: input_object }, () => {
+        console.log(this.state);
+      });
     }
-    input_object[name] = value;
-    this.setState({ input_object: input_object }, () => {
-      console.log(this.state);
-    });
   };
 
   getFormData = object => {
     const formData = new FormData();
     Object.keys(object).forEach(key => formData.append(key, object[key]));
+    this.state.files.forEach((item,i)=>{
+      formData.append(`files[${i}]`,item);
+    })
     return formData;
   };
 

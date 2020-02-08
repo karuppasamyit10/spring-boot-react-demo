@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { showNotification } from "../../actions/NotificationAction";
 import { getWaitingApprovalList, deleteSavedSearch, changeProuctApproval} from "../../actions/searchAction";
+import ReactPaginate from "react-paginate";
 
 class waitingApproval extends Component {
   constructor(props) {
@@ -14,11 +15,12 @@ class waitingApproval extends Component {
       userList: [],
       limit: 5,
       todosPerPage: 5,
-      offset: 1,
+      offset: 0,
       isModelOpen: 0,
       pageNo: 1,
       itemsPerPage: 5,
       total: 0,
+
       search: ""
     };
   }
@@ -45,8 +47,18 @@ class waitingApproval extends Component {
     this.props.getWaitingApprovalList(params, response => {
       console.log(response);
       if (response && response.response_code === 0) {
-        this.setState({ userList: response.response.pendingApprovalList });
+        const { totalRecords, pendingApprovalList } = response.response;
+        this.setState({ total: totalRecords, userList: pendingApprovalList });
       }
+    });
+  };
+
+  handlePageClick = data => {
+    let selected = data.selected;
+    let pageNo = Math.ceil(selected + 1);
+    let offset = Math.ceil(selected * this.state.todosPerPage);
+    this.setState({ offset: offset, pageNo }, () => {
+      this.getApprovalList();
     });
   };
 
@@ -93,7 +105,8 @@ class waitingApproval extends Component {
   };
 
   render() {
-    const { userList } = this.state;
+    const { userList, total, todosPerPage,offset } = this.state;
+    const pageDisplayCount = Math.ceil(total / todosPerPage);
     return (
       <React.Fragment>
         <section class="">
@@ -120,7 +133,7 @@ class waitingApproval extends Component {
                             userList.map((list, index) => {
                               return (
                                 <tr>
-                                  <th scope="row">{index + 1}</th>
+                                 <th scope="row">{offset + index + 1}</th>
                                   <td>
                                     {list.vehicleName ? list.vehicleName : ""}
                                   </td>
@@ -167,6 +180,44 @@ class waitingApproval extends Component {
                       </table>
                     </div>
                   </div>
+                  {pageDisplayCount > 1 ? (
+                  <div className="totalresults py-3 mt-3">
+                    <div className="row align-items-center">
+                      <div className="col-md-6">
+                        <span className="bold">
+                          {this.state.pageNo} - {pageDisplayCount}
+                        </span>{" "}
+                        out of <span className="bold">{pageDisplayCount}</span>{" "}
+                        listings
+                        </div>
+                      <div className="col-md-6">
+                        <ReactPaginate
+                          previousLabel={"previous"}
+                          nextLabel={"next"}
+                          breakLabel={"..."}
+                          breakClassName={"break-me"}
+                          pageCount={pageDisplayCount}
+                          marginPagesDisplayed={2}
+                          pageRangeDisplayed={5}
+                          onPageChange={this.handlePageClick}
+                          containerClassName={
+                            "pagination justify-content-end"
+                          }
+                          subContainerClassName={"page-item"}
+                          activeClassName={"page-item active"}
+                          pageLinkClassName={"page-link"}
+                          nextLinkClassName={"page-link"}
+                          previousLinkClassName={"page-link"}
+                          nextClassName={"page-item"}
+                          previousClassName={"page-item"}
+                          disabledClassName={"disabled"}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                    ""
+                  )}
                 </div>
               </div>
             </div>
