@@ -14,8 +14,9 @@ import Background2 from "../assets/img/search/hyundai.jpg";
 import Background3 from "../assets/img/search/kia2.jpg";
 import $ from "jquery";
 import { PATH } from "../utils/Constants";
-import { getVehicleDetails } from "../actions/searchAction";
+import { getVehicleDetails, changeProuctApproval } from "../actions/searchAction";
 import { showNotification } from "../actions/NotificationAction";
+import URL from '../utils/URL';
 
 class searchDetail extends Component {
   constructor(props) {
@@ -50,7 +51,32 @@ class searchDetail extends Component {
     });
   };
 
+  waitingList = () => {
+    this.props.history.push({
+      pathname: PATH.ADMIN_MY_ACCOUNT,
+      state: {
+        activeTab: 1
+      }
+    });
+  };
+
+  changeProuctApproval = (vehicleId, approvedStatus) => {
+    const params = {
+      vehicleId,
+      approvedStatus
+    };
+    this.props.changeProuctApproval(params, response => {
+      if (response && response.response_code === 0) {
+        this.props.showNotification("Updated successfully", "success");
+        this.waitingList()
+      } else {
+        this.props.showNotification(response.response_message, "error");
+      }
+    });
+  };
+
   render() {
+    const { vehicleDetails } = this.state;
     return (
       <React.Fragment>
         <section class="breadcrumb_wrap">
@@ -83,76 +109,11 @@ class searchDetail extends Component {
         <section class="search_detail">
           <div class="container">
             <div class="row mt-5 align-items-center">
-              {/* <div class="col-md-3">
-                                <a href="javascript:;" class="d-block text-center allresults">
-                                    <span class="d-block"><i class="fas fa-arrow-left"></i></span>
-                                    All Results
-          </a>
-                            </div> */}
-              {/* <div class="col-md-9">
-                                <div class="allcars">
-                                    <div>
-                                        <div class="thumbs text-center">
-                                            <img src={require("../assets/img/detail/thumb.jpeg")} class="img-fluid" alt="" />
-                                            <div class="price bold">
-                                                <span class="green d-inline-block align-middle"><i class="fas fa-arrow-circle-up"></i></span>
-                                                <span class="d-inline-block align-middle">$15,999</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="thumbs text-center">
-                                             <img src={require("../assets/img/detail/thumb.jpeg")} class="img-fluid" alt="" />
-                                            <div class="price bold">
-                                                <span class="green d-inline-block align-middle"><i class="fas fa-arrow-circle-up"></i></span>
-                                                <span class="d-inline-block align-middle">$15,999</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="thumbs text-center">
-                                        <img src={require("../assets/img/detail/thumb.jpeg")} class="img-fluid" alt="" />
-                                            <div class="price bold">
-                                                <span class="green d-inline-block align-middle"><i class="fas fa-arrow-circle-up"></i></span>
-                                                <span class="d-inline-block align-middle">$15,999</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="thumbs text-center">
-                                        <img src={require("../assets/img/detail/thumb.jpeg")} class="img-fluid" alt="" />
-                                            <div class="price bold">
-                                                <span class="green d-inline-block align-middle"><i class="fas fa-arrow-circle-up"></i></span>
-                                                <span class="d-inline-block align-middle">$15,999</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="thumbs text-center">
-                                        <img src={require("../assets/img/detail/thumb.jpeg")} class="img-fluid" alt="" />
-                                            <div class="price bold">
-                                                <span class="green d-inline-block align-middle"><i class="fas fa-arrow-circle-up"></i></span>
-                                                <span class="d-inline-block align-middle">$15,999</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="thumbs text-center">
-                                        <img src={require("../assets/img/detail/thumb.jpeg")} class="img-fluid" alt="" />
-                                            <div class="price bold">
-                                                <span class="green d-inline-block align-middle"><i class="fas fa-arrow-circle-up"></i></span>
-                                                <span class="d-inline-block align-middle">$15,999</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div> */}
             </div>
             <div class="carname mt-5 text-center">
               <div class="head1">
                 {this.state.vehicleDetails &&
-                this.state.vehicleDetails.vehicleName
+                  this.state.vehicleDetails.vehicleName
                   ? this.state.vehicleDetails.vehicleName
                   : ""}
               </div>
@@ -161,97 +122,36 @@ class searchDetail extends Component {
             <div class="row mt-3">
               <div class="col-lg-7">
                 <div class="cargallery">
-                  <div class="carsbig">
-                    <Carousel>
-                      <div class="imgs">
-                        <iframe
-                          class="frameVideo"
-                          src="https://www.youtube.com/embed/V7OY0tQ_PeA"
-                          frameborder="0"
-                          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                          allowfullscreen
-                        ></iframe>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big2.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
+                  {vehicleDetails && vehicleDetails.vehiclePhotosList && vehicleDetails.vehiclePhotosList.length ?
+                    <div class="carsbig">
+                      <Carousel>
+                        <div class="imgs">
+                          <iframe
+                            class="frameVideo"
+                            src="https://www.youtube.com/embed/V7OY0tQ_PeA"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                          ></iframe>
                         </div>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big3.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
-                        </div>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big4.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
-                        </div>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big6.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
-                        </div>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big3.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
-                        </div>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big5.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
-                        </div>
-                      </div>
-                      <div class="imgs zoomit">
-                        <img
-                          src={require("../assets/img/detail/big/big6.jpeg")}
-                          class="img-fluid"
-                          alt=""
-                        />
-                        <div class="clickdrag">
-                          <i class="fas fa-mouse"></i> Click and drag to zoom
-                          image
-                        </div>
-                      </div>
-                    </Carousel>
-                    <div></div>
-                  </div>
+                        {vehicleDetails.vehiclePhotosList.map((item) => {
+                          return (
+                            <div class="imgs zoomit">
+                              <img
+                                src={URL.BASE_URL + item.filePath}
+                                class="img-fluid"
+                                alt=""
+                              />
+                              <div class="clickdrag">
+                                <i class="fas fa-mouse"></i> Click and drag to zoom
+                                image
+                          </div>
+                            </div>
+                          )
+                        })}
+                      </Carousel>
+                      <div></div>
+                    </div> : " "}
                 </div>
               </div>
               <div class="col-lg-5">
@@ -501,6 +401,26 @@ class searchDetail extends Component {
                       </tr>
                     </tbody>
                   </table>
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic example"
+                  >
+                    <button
+                      type="button"
+                      class="btn btn-primary mr-2"
+                      onClick={() => { this.changeProuctApproval(vehicleDetails.vehicleId, 1) }}
+                    >
+                      Approve
+                   </button>
+                    <button
+                      type="button"
+                      class="btn btn-danger"
+                      onClick={() => { this.changeProuctApproval(vehicleDetails.vehicleId, -1) }}
+                    >
+                      Un Approve
+                                      </button>
+                  </div>
                 </div>
                 <div class="negotiation border-bottom pt-5 pb-5">
                   <div class="head3 medium">Negotiation</div>
@@ -616,7 +536,7 @@ class searchDetail extends Component {
                     <div class="head3 mb-2">Dealer's Description</div>
                     <div class="para1">
                       1-Owner vehicle! Features: 2.4L,​ 4 cyl,​ 4X4,​ Remote
-                      Start,​ Navigation,​ Rearview Camera,​ Power Moonroof,​
+                      Start,​ Navigation,​ Rearview Camera,​ Power Moonroof,
                       Heated Leather,​ bluetooth,​ USB port,​ AUX jack,​ CD
                       player,​ power windows and locks,​ heated auto dimming
                       power mirrors,​ fog lights,​ ABS,​ autostick,​ rear
@@ -649,6 +569,9 @@ const mapDispatchToProps = dispatch => {
     },
     getVehicleDetails: (params, callback) => {
       dispatch(getVehicleDetails(params, callback));
+    },
+    changeProuctApproval: (params, callback) => {
+      dispatch(changeProuctApproval(params, callback));
     }
   };
 };

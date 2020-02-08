@@ -551,7 +551,7 @@ class ProductRegistrationForm extends Component {
                             <label class="label bold">Transmission Type</label>
                             <select
                               className="form-control"
-                              name="transmission"
+                              name="transmissionType"
                               onChange={e => {
                                 this.handleChange(e);
                               }}

@@ -25,7 +25,9 @@ class AdminActivity extends Component {
       pageNo: 1,
       itemsPerPage: 5,
       total: 0,
-      activeTab: 0
+      activeTab: this.props.location.state && this.props.location.state.activeTab
+      ? this.props.location.state.activeTab
+      : 0,
     };
   }
 
@@ -109,13 +111,23 @@ class AdminActivity extends Component {
                 <div class="sidelinks">
                   <div
                     class="slhead text-center medium head3"
-                    onClick={() => {
-                      this.onChangeActiveTab(0);
-                    }}
                   >
                     My Account
                   </div>
                   <ul class="sllinks medium">
+                    <li class={activeTab === 0 ? "active" : ""}>
+                      <a
+                        href="#"
+                        onClick={() => {
+                          this.onChangeActiveTab(0);
+                        }}
+                      >
+                        User List
+                        <span>
+                          <i class="fas fa-chevron-right"></i>
+                        </span>
+                      </a>
+                    </li>
                     <li class={activeTab === 1 ? "active" : ""}>
                       <a
                         href="#"
@@ -123,7 +135,7 @@ class AdminActivity extends Component {
                           this.onChangeActiveTab(1);
                         }}
                       >
-                        User List{" "}
+                        Waiting For Approval
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
@@ -136,7 +148,7 @@ class AdminActivity extends Component {
                           this.onChangeActiveTab(2);
                         }}
                       >
-                        Waiting For Approval{" "}
+                        Profile
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
@@ -147,15 +159,15 @@ class AdminActivity extends Component {
               </div>
               {}
               <div class="col-md-9 form-wrap">
-                {activeTab === 0 ? (
-                  <MyAccount />
+                {activeTab === 2 ? (
+                  <MyAccount {...this.props}/>
+                ) : activeTab === 0 ? (
+                  <UserList {...this.props}/>
                 ) : activeTab === 1 ? (
-                  <UserList />
-                ) : activeTab === 2 ? (
-                  <WaitingApprovalList />
+                  <WaitingApprovalList {...this.props}/>
                 ) : (
-                  ""
-                )}
+                        ""
+                      )}
               </div>
             </div>
           </div>

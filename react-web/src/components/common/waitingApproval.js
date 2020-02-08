@@ -5,7 +5,7 @@ import { PATH } from "../../utils/Constants";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { showNotification } from "../../actions/NotificationAction";
-import { getWaitingApprovalList, deleteSavedSearch, changeProuctApproval} from "../../actions/searchAction";
+import { getWaitingApprovalList, deleteSavedSearch, changeProuctApproval } from "../../actions/searchAction";
 import ReactPaginate from "react-paginate";
 
 class waitingApproval extends Component {
@@ -70,12 +70,13 @@ class waitingApproval extends Component {
     this.props.changeProuctApproval(params, response => {
       if (response && response.response_code === 0) {
         this.props.showNotification("Updated successfully", "success");
-        this.getuserList();
+        this.getApprovalList();
       } else {
         this.props.showNotification(response.response_message, "error");
       }
     });
   };
+
   deleteSavedSearch = (vehicleId, savedSearchId) => {
     let formData = new FormData();
     formData.append("vehicleId", vehicleId);
@@ -105,7 +106,7 @@ class waitingApproval extends Component {
   };
 
   render() {
-    const { userList, total, todosPerPage,offset } = this.state;
+    const { userList, total, todosPerPage, offset } = this.state;
     const pageDisplayCount = Math.ceil(total / todosPerPage);
     return (
       <React.Fragment>
@@ -132,13 +133,13 @@ class waitingApproval extends Component {
                           {userList && userList.length ? (
                             userList.map((list, index) => {
                               return (
-                                <tr>
-                                 <th scope="row">{offset + index + 1}</th>
+                                <tr onClick={() => { this.searchDetails(list.vehicleId) }} style={{ cursor: 'pointer' }}>
+                                  <th scope="row">{offset + index + 1}</th>
                                   <td>
                                     {list.vehicleName ? list.vehicleName : ""}
                                   </td>
                                   <td>
-                                  {list.modelDetail} {list.conditionType}
+                                    {list.modelDetail} {list.conditionType}
                                   </td>
                                   <td>{list.price}</td>
                                   <td>
@@ -157,14 +158,9 @@ class waitingApproval extends Component {
                                       <button
                                         type="button"
                                         class="btn btn-danger"
-                                        onClick={() => {
-                                          this.deleteSavedSearch(
-                                            list.vehicleId,
-                                            list.savedSearchId
-                                          );
-                                        }}
+                                        onClick={() => { this.changeProuctApproval(list.vehicleId, -1) }}
                                       >
-                                        Delete
+                                        Un Approve
                                       </button>
                                     </div>
                                   </td>
@@ -172,52 +168,52 @@ class waitingApproval extends Component {
                               );
                             })
                           ) : (
-                            <tr className="text-center">
-                              <td colspan="12">No items found</td>
-                            </tr>
-                          )}
+                              <tr className="text-center">
+                                <td colspan="12">No items found</td>
+                              </tr>
+                            )}
                         </tbody>
                       </table>
                     </div>
                   </div>
                   {pageDisplayCount > 1 ? (
-                  <div className="totalresults py-3 mt-3">
-                    <div className="row align-items-center">
-                      <div className="col-md-6">
-                        <span className="bold">
-                          {this.state.pageNo} - {pageDisplayCount}
-                        </span>{" "}
-                        out of <span className="bold">{pageDisplayCount}</span>{" "}
-                        listings
+                    <div className="totalresults py-3 mt-3">
+                      <div className="row align-items-center">
+                        <div className="col-md-6">
+                          <span className="bold">
+                            {this.state.pageNo} - {pageDisplayCount}
+                          </span>{" "}
+                          out of <span className="bold">{pageDisplayCount}</span>{" "}
+                          listings
                         </div>
-                      <div className="col-md-6">
-                        <ReactPaginate
-                          previousLabel={"previous"}
-                          nextLabel={"next"}
-                          breakLabel={"..."}
-                          breakClassName={"break-me"}
-                          pageCount={pageDisplayCount}
-                          marginPagesDisplayed={2}
-                          pageRangeDisplayed={5}
-                          onPageChange={this.handlePageClick}
-                          containerClassName={
-                            "pagination justify-content-end"
-                          }
-                          subContainerClassName={"page-item"}
-                          activeClassName={"page-item active"}
-                          pageLinkClassName={"page-link"}
-                          nextLinkClassName={"page-link"}
-                          previousLinkClassName={"page-link"}
-                          nextClassName={"page-item"}
-                          previousClassName={"page-item"}
-                          disabledClassName={"disabled"}
-                        />
+                        <div className="col-md-6">
+                          <ReactPaginate
+                            previousLabel={"previous"}
+                            nextLabel={"next"}
+                            breakLabel={"..."}
+                            breakClassName={"break-me"}
+                            pageCount={pageDisplayCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={this.handlePageClick}
+                            containerClassName={
+                              "pagination justify-content-end"
+                            }
+                            subContainerClassName={"page-item"}
+                            activeClassName={"page-item active"}
+                            pageLinkClassName={"page-link"}
+                            nextLinkClassName={"page-link"}
+                            previousLinkClassName={"page-link"}
+                            nextClassName={"page-item"}
+                            previousClassName={"page-item"}
+                            disabledClassName={"disabled"}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                    ""
-                  )}
+                  ) : (
+                      ""
+                    )}
                 </div>
               </div>
             </div>
