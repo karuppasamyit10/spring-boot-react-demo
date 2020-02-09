@@ -95,21 +95,45 @@ public class CommonController {
 		logger.info("Controller==>Enter==>userRegistration<==");
 		String methodName = "USER REGISTRATION";
 		try {
+			if(userRegistrationBean.getFirstName()==null || userRegistrationBean.getFirstName().isEmpty())
+			{
+				return CommonUtil.wrapResultResponse(methodName, 1, "FirstName has been empty", null);
+			}
+			if(userRegistrationBean.getLastName()==null || userRegistrationBean.getLastName().isEmpty())
+			{
+				return CommonUtil.wrapResultResponse(methodName, 2, "LastName has been empty", null);
+			}
 			if(userRegistrationBean.getUserName()==null || userRegistrationBean.getUserName().isEmpty())
 			{
-				return CommonUtil.wrapResultResponse(methodName, 1, "UserName has been empty", null);
+				return CommonUtil.wrapResultResponse(methodName, 3, "UserName has been empty", null);
 			}
 			if(userRegistrationBean.getPassword()==null || userRegistrationBean.getPassword().isEmpty())
 			{
-				return CommonUtil.wrapResultResponse(methodName, 2, "Password has been empty", null);
+				return CommonUtil.wrapResultResponse(methodName, 4, "Password has been empty", null);
 			}
 			if(userRegistrationBean.getEmail()==null || userRegistrationBean.getEmail().isEmpty())
 			{
-				return CommonUtil.wrapResultResponse(methodName, 3, "Email has been empty", null);
+				return CommonUtil.wrapResultResponse(methodName, 5, "Email has been empty", null);
 			}
-			if(userRegistrationBean.getName()==null || userRegistrationBean.getName().isEmpty())
+			if(userRegistrationBean.getMobileNumber()==null || userRegistrationBean.getMobileNumber().isEmpty())
 			{
-				return CommonUtil.wrapResultResponse(methodName, 4, "Name has been empty", null);
+				return CommonUtil.wrapResultResponse(methodName, 6, "MobileNumber has been empty", null);
+			}
+			if(userRegistrationBean.getAddress()==null || userRegistrationBean.getAddress().isEmpty())
+			{
+				return CommonUtil.wrapResultResponse(methodName, 7, "Address has been empty", null);
+			}
+			if(userRegistrationBean.getCity()==null || userRegistrationBean.getCity().isEmpty())
+			{
+				return CommonUtil.wrapResultResponse(methodName, 8, "City has been empty", null);
+			}
+			if(userRegistrationBean.getCountry()==null || userRegistrationBean.getCountry().isEmpty())
+			{
+				return CommonUtil.wrapResultResponse(methodName, 9, "Country has been empty", null);
+			}
+			if(userRegistrationBean.getZipCode()==null || userRegistrationBean.getZipCode().isEmpty())
+			{
+				return CommonUtil.wrapResultResponse(methodName, 10, "Zipcode has been empty", null);
 			}
 			return commonDao.userRegistration(userRegistrationBean, userAgent);
 		} catch (Exception e) {

@@ -6,14 +6,42 @@ package com.example.bean;
  */
 public class UserRegistrationBean {
 
+	private String firstName; 
+	private String lastName; 
 	private String userName;
 	private String password;
 	private String confirmPassword;
-	private String name; 
 	private String email;
 	private String mobileNumber;
-	private String country;
+	private String address;
+	private String photo;
 	private String city;
+	private String country;
+	private String zipCode;
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return firstName;
+	}
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	/**
+	 * @return the lastName
+	 */
+	public String getLastName() {
+		return lastName;
+	}
+	/**
+	 * @param lastName the lastName to set
+	 */
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 	/**
 	 * @return the userName
 	 */
@@ -39,16 +67,16 @@ public class UserRegistrationBean {
 		this.password = password;
 	}
 	/**
-	 * @return the name
+	 * @return the confirmPassword
 	 */
-	public String getName() {
-		return name;
+	public String getConfirmPassword() {
+		return confirmPassword;
 	}
 	/**
-	 * @param name the name to set
+	 * @param confirmPassword the confirmPassword to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
 	}
 	/**
 	 * @return the email
@@ -75,16 +103,28 @@ public class UserRegistrationBean {
 		this.mobileNumber = mobileNumber;
 	}
 	/**
-	 * @return the country
+	 * @return the address
 	 */
-	public String getCountry() {
-		return country;
+	public String getAddress() {
+		return address;
 	}
 	/**
-	 * @param country the country to set
+	 * @param address the address to set
 	 */
-	public void setCountry(String country) {
-		this.country = country;
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	/**
+	 * @return the photo
+	 */
+	public String getPhoto() {
+		return photo;
+	}
+	/**
+	 * @param photo the photo to set
+	 */
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 	/**
 	 * @return the city
@@ -99,15 +139,28 @@ public class UserRegistrationBean {
 		this.city = city;
 	}
 	/**
-	 * @return the confirmPassword
+	 * @return the country
 	 */
-	public String getConfirmPassword() {
-		return confirmPassword;
+	public String getCountry() {
+		return country;
 	}
 	/**
-	 * @param confirmPassword the confirmPassword to set
+	 * @param country the country to set
 	 */
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}	
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	/**
+	 * @return the zipCode
+	 */
+	public String getZipCode() {
+		return zipCode;
+	}
+	/**
+	 * @param zipCode the zipCode to set
+	 */
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+	
 }

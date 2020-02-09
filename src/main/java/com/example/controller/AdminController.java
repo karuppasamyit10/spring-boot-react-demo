@@ -3,6 +3,7 @@ package com.example.controller;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -49,6 +50,7 @@ import com.example.entity.SeatsType;
 import com.example.entity.SteeringType;
 import com.example.entity.TransmissionType;
 import com.example.entity.User;
+import com.example.entity.UserInfo;
 import com.example.entity.VehicleDetail;
 import com.example.entity.VehicleType;
 import com.example.entity.Year;
@@ -72,6 +74,7 @@ import com.example.repository.PriceRepository;
 import com.example.repository.SeatsTypeRepository;
 import com.example.repository.SteeringTypeRepository;
 import com.example.repository.TransmissionTypeRepository;
+import com.example.repository.UserInfoRepository;
 import com.example.repository.UserRepository;
 import com.example.repository.VehicleDetailRepository;
 import com.example.repository.VehicleTypeRepository;
@@ -112,6 +115,9 @@ public class AdminController {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	UserInfoRepository userInfoRepository;
 	
 	@Autowired
 	MemberShipTypeRepository memberShipTypeRepository;
@@ -172,18 +178,30 @@ public class AdminController {
  
 	@PostConstruct
 	public void addSuperAdminUserAccount() throws Exception {
-		//Check username 
+		//Check admin username 
 		User userObj = userRepository.findByUserName("admin");
 		if(userObj==null) {
+			Date createdDate = userRepository.getUTC_DateTime();
 			userObj = new User();
 			userObj.setUserName("admin");
 			userObj.setEmail("karuppasamyit10@gmail.com");
-			userObj.setName("Super Admin");
-			userObj.setCreatedDate(userRepository.getUTC_DateTime());
-			userObj.setUserType("SUPERADMIN");
+			userObj.setCreatedDate(createdDate);
+			userObj.setUserType("ADMIN");
 			userObj.setVerify(true);
 			userObj.setPassword(new BCryptPasswordEncoder().encode("demo"));
-			userRepository.save(userObj);
+			userObj = userRepository.save(userObj);
+			
+			UserInfo userInfo = new UserInfo();
+			userInfo.setUserId(userObj.getUserId());
+			userInfo.setAddress("TEST");
+			userInfo.setCity("Chennai");
+			userInfo.setCountry("INDIA");
+			userInfo.setFirstName("Admin");
+			userInfo.setLastName("Admin");
+			userInfo.setCreatedDate(createdDate);
+			userInfo.setPhoto("/usr/default.jpg");
+			userInfo.setZipCode("123456");
+			userInfoRepository.save(userInfo);
 		}
 	}
 	
@@ -1002,19 +1020,21 @@ public class AdminController {
 		logger.info("Controller==>Enter==>getUsersList<==");
 		String methodName = "GET USERS LIST";
 		List<Object> userListObj = new LinkedList<>();
-		Page<User> userList = null;
+		Page<Object> userList = null;
 		Map<String, Object> response = new LinkedHashMap<String, Object>();
 		try 
 		{
 			userList = userRepository.getUserListBySearch(vehicleRegisterBean.getSearch()==null || vehicleRegisterBean.getSearch().isEmpty() ?"":vehicleRegisterBean.getSearch().trim(), commonUtil.pageable(vehicleRegisterBean.getPageNo(), vehicleRegisterBean.getItemsPerPage()));
-			for(User user : userList.getContent())
+			for(Object user : userList.getContent())
 			{
+				Object[]  userObj = (Object[]) user;	
 				Map<String, Object> params = new LinkedHashMap<String, Object>();
-				params.put("userId", user.getUserId());
-				params.put("membershipId", user.getMembershipId());
-				params.put("email", user.getEmail());
-				params.put("name", user.getName());
-				params.put("mobile_number", user.getMobileNumber());
+				params.put("userId", userObj[0]);
+				params.put("membershipId", userObj[4]);
+				params.put("email", userObj[3]);
+				params.put("displayName", userObj[7]);
+				params.put("mobile_number", userObj[10]);
+				params.put("photo", commonConfig.getHostBaseUrl()+userObj[9]);
 				userListObj.add(params);
 			}
 			response.put("totalRecords", userList.getTotalElements());
@@ -1124,7 +1144,7 @@ public class AdminController {
 		String methodName = "UPDATE PRODUCT APPROVAL";
 		try 
 		{
-			VehicleDetail vehicleDetail = vehicleDetailRepository.findByVehicleIdAndApprovedStatusAndIsDeleted(vehicleRegisterBean.getVehicleId(), 0, 0);
+			VehicleDetail vehicleDetail = vehicleDetailRepository.findByVehicleId(vehicleRegisterBean.getVehicleId());
 			if(vehicleDetail==null){
 				 return CommonUtil.wrapResultResponse(methodName, 1, "Invalid product details", null);
 			}

@@ -17,4 +17,6 @@ public interface UserDao {
 	 * @throws Exception
 	 */
 	Map<?, ?> userLogout(long userId, String userAgent) throws Exception;
+
+	Map<?, ?> getUserProfile(long userId) throws Exception;
 }

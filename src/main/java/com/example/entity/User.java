@@ -43,9 +43,6 @@ public class User implements Serializable {
 	@Column(name = "userType", nullable=false, length=50)
 	private String userType;
 
-	@Column(name = "name", nullable=false, length=100)
-	private String name;
-
 	@Column(name = "mobileNumber", nullable=true, length=20)
 	private String mobileNumber;
 	
@@ -144,20 +141,6 @@ public class User implements Serializable {
 	 */
 	public void setUserType(String userType) {
 		this.userType = userType;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	/**
@@ -299,5 +282,4 @@ public class User implements Serializable {
 	public void setIsDeleted(int isDeleted) {
 		this.isDeleted = isDeleted;
 	}
-
 }

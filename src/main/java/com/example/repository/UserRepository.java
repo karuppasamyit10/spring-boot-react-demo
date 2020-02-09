@@ -24,14 +24,20 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public User findByUserNameIgnoreCaseOrEmailIgnoreCase(String username, String upperCase);
 
 	public User findByEmail(String email);
+	
+	public User findByMobileNumber(String mobileNumber);
 
 	public User findByUserId(long userId);
 
 	public User findByUserName(String string);
 	
-	@Query(value = "SELECT * from users WHERE (user_name LIKE %:search% OR email LIKE %:search% OR name LIKE %:search% OR mobile_number LIKE %:search%) AND user_type = 'USER'"
-			+ "ORDER BY name ASC \n#pageable\n ",
-			countQuery = "SELECT count(*) from users WHERE (user_name LIKE %:search% OR email LIKE %:search% OR name LIKE %:search% OR mobile_number LIKE %:search%) AND user_type = 'USER'",
+	@Query(value = "SELECT u.user_id, u.user_name, u.user_type, u.email, u.membership_id, u.is_verify, ui.country, ui.first_name, ui.last_name, ui.photo, u.mobile_number from users u "
+			+ " LEFT JOIN user_info ui ON ui.user_id = u.user_id "
+			+ " WHERE (u.user_name LIKE %:search% OR u.email LIKE %:search% OR ui.first_name LIKE %:search% OR ui.last_name LIKE %:search% OR u.mobile_number LIKE %:search%) AND u.user_type = 'USER' "
+			+ " ORDER BY ui.first_name ASC \n#pageable\n ",
+			countQuery =" SELECT count(*) from users u "
+			+ " LEFT JOIN user_info ui ON ui.user_id = u.user_id "
+			+ " WHERE (u.user_name LIKE %:search% OR u.email LIKE %:search% OR ui.first_name LIKE %:search% OR ui.last_name LIKE %:search% OR u.mobile_number LIKE %:search%) AND u.user_type = 'USER' ",
 			nativeQuery = true)
-	Page<User> getUserListBySearch(@Param("search") String search, Pageable pageable);
+	Page<Object> getUserListBySearch(@Param("search") String search, Pageable pageable);
 }

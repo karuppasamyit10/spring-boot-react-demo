@@ -51,6 +51,7 @@ import com.example.entity.SavedMySearch;
 import com.example.entity.SteeringType;
 import com.example.entity.TransmissionType;
 import com.example.entity.User;
+import com.example.entity.UserInfo;
 import com.example.entity.VehicleDetail;
 import com.example.entity.VehiclePhotos;
 import com.example.entity.Year;
@@ -73,6 +74,7 @@ import com.example.repository.PriceRepository;
 import com.example.repository.SavedMySearchRepository;
 import com.example.repository.SteeringTypeRepository;
 import com.example.repository.TransmissionTypeRepository;
+import com.example.repository.UserInfoRepository;
 import com.example.repository.UserRepository;
 import com.example.repository.VehicleDetailRepository;
 import com.example.repository.VehiclePhotosRepository;
@@ -163,6 +165,12 @@ public class CommonDaoImpl implements CommonDao {
 	
 	@Autowired
 	LanguageRepository languageRepository;
+	
+	@Autowired
+	UserInfoRepository userInfoRepository;
+	
+	@Autowired
+	CommonUtil commonUtil;
 		
 	@Override
 	@Transactional(rollbackOn = { Exception.class})
@@ -175,31 +183,51 @@ public class CommonDaoImpl implements CommonDao {
 			//Check username 
 			userObj = userRepository.findByUserNameIgnoreCaseOrEmailIgnoreCase(userRegistrationBean.getUserName(), userRegistrationBean.getUserName());
 			if(userObj!=null) {
-				return CommonUtil.wrapResultResponse(methodName, 1, "Username already exists", null);
+				return CommonUtil.wrapResultResponse(methodName, 3, "Username already exists", null);
 			}
 			
 			//Check password
 			if(!userRegistrationBean.getPassword().equals(userRegistrationBean.getConfirmPassword())) {
-				return CommonUtil.wrapResultResponse(methodName, 2, "Password does not match", null);
+				return CommonUtil.wrapResultResponse(methodName, 4, "Password does not match", null);
 			}
 			
 			//Check email 
 			userObj = userRepository.findByEmail(userRegistrationBean.getEmail());
 			if(userObj!=null) {
-				return CommonUtil.wrapResultResponse(methodName, 3, "Email already exists", null);
+				return CommonUtil.wrapResultResponse(methodName, 5, "Email already exists", null);
+			}
+			
+			userObj = userRepository.findByMobileNumber(userRegistrationBean.getEmail());
+			if(userObj!=null) {
+				return CommonUtil.wrapResultResponse(methodName, 6, "Mobile already exists", null);
 			}
 			Date createdDate = userRepository.getUTC_DateTime();
-			
 			userObj = new User();
 			userObj.setUserName(userRegistrationBean.getUserName());
 			userObj.setEmail(userRegistrationBean.getEmail());
-			userObj.setName(userRegistrationBean.getName());
 			userObj.setCreatedDate(createdDate);
 			userObj.setUserType("USER");
 			userObj.setVerify(true);
-			userObj.setMembershipId(1);
+			userObj.setMembershipId(0);
 			userObj.setPassword(new BCryptPasswordEncoder().encode(userRegistrationBean.getPassword()));
-			userRepository.save(userObj);
+			userObj = userRepository.save(userObj);
+			
+			UserInfo userInfo = new UserInfo();
+			userInfo.setUserId(userObj.getUserId());
+			userInfo.setAddress(userRegistrationBean.getAddress());
+			userInfo.setCity(userRegistrationBean.getCity());
+			userInfo.setCountry(userRegistrationBean.getCountry());
+			userInfo.setFirstName(userRegistrationBean.getFirstName());
+			userInfo.setLastName(userRegistrationBean.getLastName());
+			userInfo.setCreatedDate(createdDate);
+			userInfo.setPhoto("/usr/default.jpg");
+			if(userRegistrationBean.getPhoto()!=null && !userRegistrationBean.getPhoto().isEmpty()){
+				String profileImgPath = commonUtil.base64ToWriteLocalImage(userRegistrationBean.getPhoto(), "usr", userObj.getUserId());
+				userInfo.setPhoto(profileImgPath);
+			}
+			userInfo.setZipCode(userRegistrationBean.getZipCode());
+			userInfoRepository.save(userInfo);
+			
 			return CommonUtil.wrapResultResponse(methodName, 0, "Success", null);
 		} catch (Exception e) {
 			logger.error("::::Exception(daoImpl)==>updateLogoutUser::::");

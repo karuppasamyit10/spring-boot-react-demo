@@ -1,6 +1,8 @@
 package com.example.util;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -17,6 +19,7 @@ import java.util.stream.Stream;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -264,5 +267,43 @@ public class CommonUtil {
 		return date;
 	}
 	
-	
+	public String base64ToWriteLocalImage(String base64String, String type, long userId)
+	{
+//		String base64String = "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAB5C...";
+		try 
+		{
+			String[] strings = base64String.split(",");
+	        String extension;
+	        switch (strings[0]) {//check image's extension
+	            case "data:image/jpeg;base64":
+	                extension = "jpeg";
+	                break;
+	            case "data:image/png;base64":
+	                extension = "png";
+	                break;
+	            default://should write cases for more images types
+	                extension = "jpg";
+	                break;
+	        }
+	      //convert base64 string to binary data
+	        byte[] bytes = DatatypeConverter.parseBase64Binary(strings[1]);
+	        
+	        long currentTime = System.currentTimeMillis();
+			String fileName= userId+"_"+currentTime+"."+extension;
+			String fileDir = commonConfig.getStaticLocations()+"/"+type;
+			String fileBasePath = "/"+type+"/"+fileName;
+            File tempDir = new File(fileDir);
+            if(!tempDir.exists()){
+            	tempDir.mkdirs();
+            }
+        	File file = new File(tempDir,fileName);
+            BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
+            stream.write(bytes);
+            stream.close();
+	        return fileBasePath;
+		} catch (Exception e) {
+	        e.printStackTrace();
+	        return "/usr/default.jpg";
+	    }
+	}
 }

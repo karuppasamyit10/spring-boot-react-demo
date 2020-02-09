@@ -13,7 +13,10 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
+import com.example.config.CommonConfig;
 import com.example.entity.User;
+import com.example.entity.UserInfo;
+import com.example.repository.UserInfoRepository;
 import com.example.repository.UserRepository;
 
 /**
@@ -28,20 +31,32 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private UserInfoRepository userInfoRepository;
+	
+	@Autowired
+	CommonConfig commonConfig;
+	
     @Override
     public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
     	final Map<String, Object> additionalInfo = new HashMap<>();
     	logger.info("::Enter==>METHOD = CustomTokenEnhancer");
 		String username = authentication.getName();
 		User userObj = userRepository.findByUserNameIgnoreCaseOrEmailIgnoreCase(username, username);
-        Map<String, Object> response = new LinkedHashMap<String, Object>();
-		response.put("userType", userObj.getUserType());
-		response.put("userName", userObj.getUserName() == null ? userObj.getEmail() : userObj.getUserName());
-		response.put("displayName", userObj.getName() == null || userObj.getName().isEmpty() ? userObj.getUserName() == null ? userObj.getEmail() : userObj.getUserName() : userObj.getName());
-		response.put("userId", userObj.getUserId());
-		response.put("memberShipId", userObj.getMembershipId());
-        additionalInfo.put("userInfo", response);
-        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+		if(userObj!=null){
+			UserInfo userInfo =userInfoRepository.findByUserId(userObj.getUserId());
+			if(userInfo!=null){
+				Map<String, Object> response = new LinkedHashMap<String, Object>();
+				response.put("userType", userObj.getUserType());
+				response.put("userName", userObj.getUserName() == null ? userObj.getEmail() : userObj.getUserName());
+				response.put("displayName", userInfo.getFirstName()+" "+userInfo.getLastName());
+				response.put("userId", userObj.getUserId());
+				response.put("memberShipId", userObj.getMembershipId());
+				response.put("photo", commonConfig.getHostBaseUrl()+userInfo.getPhoto());
+		        additionalInfo.put("userInfo", response);
+		        ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+			}
+		}
         return accessToken;
     }
 }
