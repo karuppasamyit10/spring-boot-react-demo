@@ -95,4 +95,112 @@
     padding: 0px 10px;
   }
 }
+
+.transport_harasow .switch_shipping .nav-item {
+  padding: 0px 10px;
+}
+
+.transport_harasow .switch_shipping .nav-link {
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+.transport_harasow .switch_shipping .nav-link.active {
+  border: 1px solid #00a0dd;
+  color: #fff;
+  background-color: #00a0dd;
+}
+
+.transport_harasow .greybox {
+  background: #F5F6F8;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
+
+.transport_harasow .transporttabs {
+  border-bottom: 0px;
+}
+
+.transport_harasow .transporttabs .nav-item .nav-link {
+  border: 1px solid #ccc;
+  color: #000;
+  border-radius: 0px;
+}
+
+.transport_harasow .transporttabs .nav-item .nav-link.active {
+  border: 1px solid #00a0dd;
+  color: #fff;
+  background-color: #00a0dd;
+}
+
+.transport_harasow .list-group li.list-group-item {
+  padding: 0px;
+}
+
+.transport_harasow .list-group li.list-group-item a {
+  padding: 10px 15px;
+  display: block;
+  color: #000;
+}
+
+.transport_harasow .list-group li.list-group-item a:hover {
+  text-decoration: none;
+  color: #00a0dd;
+}
+
+.transport_harasow .list-group li.list-group-item a span {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.sellerbenefit {
+  width: 100%;
+  height: 350px;
+  background: url("../img/about/who-we-are/image.png") no-repeat bottom center;
+  background-size: cover;
+  padding: 30px 30px 20px;
+}
+
+.sellerbenefit .bgtxt {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+}
+
+.partners_wrap .btn-link {
+  color: #000;
+}
+
+.partners_wrap .btn-link:hover {
+  text-decoration: none;
+  color: #2ab94f;
+}
+
+.partners_wrap .form-control {
+  background-color: #F5F6F8;
+  font-size: 18px;
+  height: 45px;
+}
+
+.partners_wrap .form-control:focus {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+}
+
+.partners_wrap textarea.form-control {
+  height: auto;
+  resize: none;
+}
+
+.partners_wrap .card-img {
+  border: 1px solid #ccc;
+}
+
+.partners_wrap .card {
+  border: 0px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #000;
+  border-radius: 0px;
+}
 /*# sourceMappingURL=about.css.map */

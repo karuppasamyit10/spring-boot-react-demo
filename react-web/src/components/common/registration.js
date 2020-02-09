@@ -18,20 +18,25 @@ class registration extends Component {
       password: "",
       confirmPassword: "",
       email: "",
-      mobile: "",
+      mobileNumber: "",
       name: "",
+      firstName: "",
+      lastName: "",
+      zipCode: "",
+      address: "",
       city: "",
       countryId: null,
       countryList: [],
+      preview: [],
       error: {
         userName: "",
         password: "",
         confirmPassword: "",
         email: "",
-        mobile: "",
+        mobileNumber: "",
         name: "",
         countryId: "",
-        city: "",
+        city: ""
       },
       token: {},
       isdisable: false
@@ -41,26 +46,56 @@ class registration extends Component {
     this.emailRef = React.createRef();
     this.confirmPasswordRef = React.createRef();
     this.mobileRef = React.createRef();
-    this.nameRef = React.createRef();
+    this.firstNameRef = React.createRef();
+    this.lastNameRef = React.createRef();
   }
 
   componentDidMount() {
     document.title = "Auto Harasow | Registration";
-    this.getVehicleMasterData()
+    this.getVehicleMasterData();
   }
 
   getVehicleMasterData = () => {
     this.props.getVehicleMasterData({}, response => {
       if (response && response.response_code === 0) {
-        this.setState({ countryList: response.response.countryList })
+        this.setState({ countryList: response.response.countryList });
       }
-    })
-  }
+    });
+  };
+
+  removePhoto = index => {
+    let preview = this.state.preview ? this.state.preview : [];
+    let files = this.state.files ? this.state.files : [];
+    files.splice(index, 1);
+    preview.splice(index, 1);
+    this.setState({ preview, files });
+  };
+
+  handleImageRead = e => {
+    e.preventDefault();
+    let preview = [];
+    const reader = new FileReader();
+    const file = e.target.files[0];
+
+    reader.onloadend = () => {
+      preview.push(reader.result);
+      this.setState({
+        preview: preview
+      });
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
 
   handleOnChange = e => {
     let { target } = e;
     let { name, value } = target;
-    if (name === "mobile") {
+    if (name === "image") {
+      this.handleImageRead(e);
+    }
+    if (name === "mobileNumber") {
       value = value.replace(/[^0-9]/g, "");
     }
     this.setState({ [name]: value }, () => {
@@ -68,9 +103,9 @@ class registration extends Component {
     });
   };
 
-  onChangeCountry = (e) => {
-    this.setState({ countryId: e.target.value }, () => { });
-  }
+  onChangeCountry = e => {
+    this.setState({ countryId: e.target.value }, () => {});
+  };
 
   handleRemoveError = () => {
     let {
@@ -80,7 +115,7 @@ class registration extends Component {
       confirmPassword,
       email,
       name,
-      mobile,
+      mobileNumber,
       countryId,
       city
     } = this.state;
@@ -109,9 +144,9 @@ class registration extends Component {
       error.name = "";
       this.setState({ error: error });
     }
-    if (mobile) {
+    if (mobileNumber) {
       this.mobileRef.current.classList.remove("error");
-      error.mobile = "";
+      error.mobileNumber = "";
       this.setState({ error: error });
     }
     if (countryId) {
@@ -133,8 +168,9 @@ class registration extends Component {
       error,
       confirmPassword,
       email,
-      name,
-      mobile,
+      firstName,
+      lastName,
+      mobileNumber,
       countryId,
       city
     } = this.state;
@@ -173,17 +209,24 @@ class registration extends Component {
       this.setState({ error: error });
       return false;
     }
-    if (!name) {
-      this.nameRef.current.focus();
-      this.nameRef.current.classList.add("error");
+    if (!firstName) {
+      this.firstNameRef.current.focus();
+      this.firstNameRef.current.classList.add("error");
       error.name = "Enter name";
       this.setState({ error: error });
       return false;
     }
-    if (!mobile) {
+    if (!lastName) {
+      this.lastNameRef.current.focus();
+      this.lastNameRef.current.classList.add("error");
+      error.name = "Enter name";
+      this.setState({ error: error });
+      return false;
+    }
+    if (!mobileNumber) {
       this.mobileRef.current.focus();
       this.mobileRef.current.classList.add("error");
-      error.mobile = "Enter mobile";
+      error.mobileNumber = "Enter mobile";
       this.setState({ error: error });
       return false;
     }
@@ -211,29 +254,40 @@ class registration extends Component {
       password,
       email,
       confirmPassword,
-      mobile,
-      name
+      mobileNumber,
+      firstName,
+      lastName,
+      zipCode,
+      address,
+      city,
+      countryId,
+      preview
     } = this.state;
     let inputObject = {
       userName,
       password,
       email,
       confirmPassword,
-      mobile,
-      name
+      mobileNumber,
+      firstName,
+      lastName,
+      zipCode,
+      address,
+      city,
+      country: countryId,
+      photo: preview && preview.length ? preview[0] : null
     };
     let submit = this.handleValidate();
     if (submit) {
       this.setState({ isdisable: true });
       this.props.registration(inputObject, response => {
-        if (response && response.response_code == 0) {
+        if (response && response.response_code === 0) {
           this.setState({ isdisable: false });
           this.props.showNotification("sucessfully registered", "success");
-          this.props.history.push("/");
+          this.props.history.push(PATH.SIGIN);
         } else if (response && response.response_code > 0) {
           this.setState({ isdisable: false });
-          this.props.showNotification(response.response.response_message, "error");
-          this.props.history.push("/");
+          this.props.showNotification(response.response_message, "error");
         }
       });
     }
@@ -292,7 +346,7 @@ class registration extends Component {
               <form class="row no-gutters form-rows">
                 <div class="col-lg-12">
                   <div class="form-group row no-gutters align-items-center">
-                    <label class="col-md-3 bold form-left">ID</label>
+                    <label class="col-md-3 bold form-left">User Name</label>
                     <div class="col-md-9 form-right">
                       <input
                         type="text"
@@ -373,23 +427,49 @@ class registration extends Component {
                     </div>
                   </div>
                   <div class="form-group row no-gutters align-items-center">
-                    <label class="col-md-3 bold form-left">Name</label>
+                    <label class="col-md-3 bold form-left">First Name</label>
                     <div class="col-md-9 form-right">
                       <input
                         type="text"
                         class="form-control"
                         class="form-control"
-                        ref={this.nameRef}
+                        ref={this.firstNameRef}
                         id="nameInput"
-                        name="name"
-                        value={this.state.name}
+                        name="firstName"
+                        value={this.state.firstName}
                         onChange={e => {
                           this.handleOnChange(e);
                         }}
                       />
                       <p style={{ color: "red" }}>
-                        {this.state.error["name"]
-                          ? this.state.error["name"]
+                        {this.state.error["firstName"]
+                          ? this.state.error["firstName"]
+                          : ""}
+                      </p>
+
+                      <small class="form-text text-muted">
+                        Please enter English characters only.
+                      </small>
+                    </div>
+                  </div>
+                  <div class="form-group row no-gutters align-items-center">
+                    <label class="col-md-3 bold form-left">Last Name</label>
+                    <div class="col-md-9 form-right">
+                      <input
+                        type="text"
+                        class="form-control"
+                        class="form-control"
+                        ref={this.lastNameRef}
+                        id="nameInput"
+                        name="lastName"
+                        value={this.state.lastName}
+                        onChange={e => {
+                          this.handleOnChange(e);
+                        }}
+                      />
+                      <p style={{ color: "red" }}>
+                        {this.state.error["lastName"]
+                          ? this.state.error["lastName"]
                           : ""}
                       </p>
 
@@ -432,17 +512,17 @@ class registration extends Component {
                         ref={this.mobileRef}
                         id="exampleInputPassword2"
                         // placeholder="enter password"
-                        name="mobile"
+                        name="mobileNumber"
                         pattern="[0-9]"
                         maxLength="10"
-                        value={this.state.mobile}
+                        value={this.state.mobileNumber}
                         onChange={e => {
                           this.handleOnChange(e);
                         }}
                       />
                       <p style={{ color: "red" }}>
-                        {this.state.error["mobile"]
-                          ? this.state.error["mobile"]
+                        {this.state.error["mobileNumber"]
+                          ? this.state.error["mobileNumber"]
                           : ""}
                       </p>
                     </div>
@@ -450,17 +530,26 @@ class registration extends Component {
                   <div class="form-group row no-gutters align-items-center">
                     <label class="col-md-3 bold form-left">Country</label>
                     <div class="col-md-9 form-right">
-                      <select class="form-control" value={this.state.countryId} onChange={this.onChangeCountry}>
+                      <select
+                        class="form-control"
+                        value={this.state.countryId}
+                        onChange={this.onChangeCountry}
+                      >
                         <option value={null} selected>
                           Select Country
                         </option>
-                        {this.state.countryList && this.state.countryList.length ?
-                          this.state.countryList.map((countryList) => {
+                        {this.state.countryList &&
+                        this.state.countryList.length ? (
+                          this.state.countryList.map(countryList => {
                             return (
-                              <option value={countryList.countryId}>{countryList.country}</option>
-                            )
-                          }) : <option value="">Loading...</option>}
-
+                              <option value={countryList.countryId}>
+                                {countryList.country}
+                              </option>
+                            );
+                          })
+                        ) : (
+                          <option value="">Loading...</option>
+                        )}
                       </select>
                     </div>
                   </div>
@@ -471,7 +560,6 @@ class registration extends Component {
                         type="text"
                         class="form-control"
                         class="form-control"
-                        ref={this.nameRef}
                         id="cityInput"
                         name="city"
                         value={this.state.city}
@@ -487,6 +575,49 @@ class registration extends Component {
                     </div>
                   </div>
                   <div class="form-group row no-gutters align-items-center">
+                    <label class="col-md-3 bold form-left">Zip Code</label>
+                    <div class="col-md-9 form-right">
+                      <input
+                        type="text"
+                        class="form-control"
+                        class="form-control"
+                        id="cityInput"
+                        name="zipCode"
+                        value={this.state.zipCode}
+                        onChange={e => {
+                          this.handleOnChange(e);
+                        }}
+                      />
+                      <p style={{ color: "red" }}>
+                        {this.state.error["zipCode"]
+                          ? this.state.error["zipCode"]
+                          : ""}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="form-group row no-gutters align-items-center">
+                    <label class="col-md-3 bold form-left">Address</label>
+                    <div class="col-md-9 form-right">
+                      <input
+                        type="text"
+                        class="form-control"
+                        class="form-control"
+                        id="cityInput"
+                        name="address"
+                        value={this.state.address}
+                        onChange={e => {
+                          this.handleOnChange(e);
+                        }}
+                      />
+                      <p style={{ color: "red" }}>
+                        {this.state.error["address"]
+                          ? this.state.error["address"]
+                          : ""}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="form-group row no-gutters align-items-center">
                     <label class="col-md-3 bold form-left">Terms of Use</label>
                     <div class="col-md-9 form-right checkboxwrap">
                       <input type="checkbox" class="form-check-input" />
@@ -495,6 +626,48 @@ class registration extends Component {
                       </label>
                     </div>
                   </div>
+
+                  <div class="row mb-4 mt-3">
+                    <div class="col-12">
+                      <div class="form-grop">
+                        <label class="label bold">File Upload</label>
+                        <div class="custom-file">
+                          <input
+                            type="file"
+                            class="custom-file-input"
+                            id="customFile"
+                            name="image"
+                            onChange={e => {
+                              this.handleOnChange(e);
+                            }}
+                          />
+                          <label class="custom-file-label" for="customFile">
+                            Choose file
+                          </label>
+                        </div>
+                      </div>
+                      <div class="imgpreview row no-gutters">
+                        {this.state.preview && this.state.preview.length
+                          ? this.state.preview.map((item, index) => {
+                              return (
+                                <div class="prevfile col">
+                                  <button
+                                    class="removefile"
+                                    onClick={() => {
+                                      this.removePhoto(index);
+                                    }}
+                                  >
+                                    <i class="fas fa-times-circle"></i>
+                                  </button>
+                                  <img src={item} class="img-fluid" alt="" />
+                                </div>
+                              );
+                            })
+                          : " "}
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="form-group text-center mt-5 plain">
                     <button
                       type="button"

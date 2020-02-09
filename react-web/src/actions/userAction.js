@@ -114,6 +114,19 @@ export function productRegistration(object, callback) {
   };
 }
 
+export function getProfileInfo(object, callBack) {
+  return function(dispatch) {
+    Client.get(URL.PROFILE, null, true)
+      .then(response => {
+        myLog("====GET PROFILE response===::::", response);
+        callBack(response);
+      })
+      .catch(error => {
+        myLog("====GET PROFILE response===????", error);
+      });
+  };
+}
+
 export function getCommonDetails(callback) {
   Client.get(URL.COMMON, null, false)
     .then(response => {

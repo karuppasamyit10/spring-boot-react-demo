@@ -6,21 +6,25 @@ import { Link } from "react-router-dom";
 import { showNotification } from "../../actions/NotificationAction";
 import {
   getSavedSearchList,
-  deleteSavedSearch
+  deleteSavedSearch,
+  getWaitingApprovalList
 } from "../../actions/searchAction";
+import ReactPaginate from "react-paginate";
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      savedSearchList: [],
+      userList: [],
       limit: 5,
       todosPerPage: 5,
-      offset: 1,
+      offset: 0,
       isModelOpen: 0,
       pageNo: 1,
       itemsPerPage: 5,
-      total: 0
+      total: 0,
+
+      search: ""
     };
   }
 
@@ -34,18 +38,32 @@ class ProductList extends Component {
       top: 0,
       behavior: "smooth"
     });
-    this.getSavedSearchList();
+    this.getApprovalList();
   }
 
-  getSavedSearchList = () => {
-    this.props.getSavedSearchList({}, response => {
+  getApprovalList = () => {
+    const { search, pageNo, itemsPerPage } = this.state;
+    const params = {
+      pageNo,
+      itemsPerPage
+    };
+    this.props.getWaitingApprovalList(params, response => {
       console.log(response);
       if (response && response.response_code === 0) {
-        this.setState({ savedSearchList: response.response.savedSearchList });
+        const { totalRecords, pendingApprovalList } = response.response;
+        this.setState({ total: totalRecords, userList: pendingApprovalList });
       }
     });
   };
 
+  handlePageClick = data => {
+    let selected = data.selected;
+    let pageNo = Math.ceil(selected + 1);
+    let offset = Math.ceil(selected * this.state.todosPerPage);
+    this.setState({ offset: offset, pageNo }, () => {
+      this.getApprovalList();
+    });
+  };
   deleteSavedSearch = (vehicleId, savedSearchId) => {
     let formData = new FormData();
     formData.append("vehicleId", vehicleId);
@@ -53,20 +71,19 @@ class ProductList extends Component {
     let data = {
       vehicleId: vehicleId,
       savedSearchId: savedSearchId
-    }
+    };
     this.props.deleteSavedSearch(data, response => {
       console.log(response);
-      if(response && response.response_code === 0){
-        this.props.showNotification("deleted successfully","success");
+      if (response && response.response_code === 0) {
+        this.props.showNotification("deleted successfully", "success");
         this.getSavedSearchList();
-      }
-      else{
-        this.props.showNotification(response.response_message,'error');
+      } else {
+        this.props.showNotification(response.response_message, "error");
       }
     });
   };
 
-  searchDetails = (vehicleId) => {
+  searchDetails = vehicleId => {
     this.props.history.push({
       pathname: PATH.SEARCH_DETAIL,
       state: {
@@ -76,7 +93,9 @@ class ProductList extends Component {
   };
 
   render() {
-    const { savedSearchList } = this.state;
+    const { userList, total, todosPerPage, offset } = this.state;
+    const pageDisplayCount = Math.ceil(total / todosPerPage);
+
     return (
       <React.Fragment>
         <section class="breadcrumb_wrap">
@@ -153,57 +172,91 @@ class ProductList extends Component {
                           </tr>
                         </thead>
                         <tbody>
-                          {savedSearchList && savedSearchList.length
-                            ? savedSearchList.map((list, index) => {
-                                return (
-                                  <tr>
-                                    <th scope="row">{index + 1}</th>
-                                    <td>
-                                      {list.vehicleName ? list.vehicleName : ""}
-                                    </td>
-                                    <td>
-                                      357 Great Deals out of 7,942 listings
-                                      starting at $1,100
-                                    </td>
-                                    <td>USD 970</td>
-                                    <td>
-                                      <div
-                                        class="btn-group"
-                                        role="group"
-                                        aria-label="Basic example"
+                          {userList && userList.length ? (
+                            userList.map((list, index) => {
+                              return (
+                                <tr style={{ cursor: "pointer" }}>
+                                  <th scope="row">{offset + index + 1}</th>
+                                  <td
+                                    onClick={() => {
+                                      this.searchDetails(list.vehicleId);
+                                    }}
+                                  >
+                                    {list.vehicleName ? list.vehicleName : ""}
+                                  </td>
+                                  <td>
+                                    {list.modelDetail} {list.conditionType}
+                                  </td>
+                                  <td>{list.price}</td>
+                                  <td>
+                                    <div
+                                      class="btn-group"
+                                      role="group"
+                                      aria-label="Basic example"
+                                    >
+                                      <button
+                                        type="button"
+                                        class="btn btn-primary"
+                                        onClick={() => {
+                                          this.searchDetails(
+                                            list.vehicleId,
+                                          );
+                                        }}
                                       >
-                                        <button
-                                          type="button"
-                                          class="btn btn-primary"
-                                          onClick={()=>{
-                                            this.searchDetails(list.vehicleId)
-                                          }}
-                                        >
-                                          View
-                                        </button>
-                                        <button
-                                          type="button"
-                                          class="btn btn-danger"
-                                          onClick={() => {
-                                            this.deleteSavedSearch(
-                                              list.vehicleId,
-                                              list.savedSearchId
-                                            );
-                                          }}
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                    </td>
-                                  </tr>
-                                );
-                              })
-                            : <tr className="text-center">
+                                        View
+                                      </button>
+                                    </div>
+                                  </td>
+                                </tr>
+                              );
+                            })
+                          ) : (
+                            <tr className="text-center">
                               <td colspan="12">No items found</td>
-                            </tr>}
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     </div>
+                    {pageDisplayCount > 1 ? (
+                      <div className="totalresults py-3 mt-3">
+                        <div className="row align-items-center">
+                          <div className="col-md-6">
+                            <span className="bold">
+                              {this.state.pageNo} - {pageDisplayCount}
+                            </span>{" "}
+                            out of{" "}
+                            <span className="bold">{pageDisplayCount}</span>{" "}
+                            listings
+                          </div>
+                          <div className="col-md-6">
+                            <ReactPaginate
+                              previousLabel={"previous"}
+                              nextLabel={"next"}
+                              breakLabel={"..."}
+                              breakClassName={"break-me"}
+                              pageCount={pageDisplayCount}
+                              marginPagesDisplayed={2}
+                              pageRangeDisplayed={5}
+                              onPageChange={this.handlePageClick}
+                              containerClassName={
+                                "pagination justify-content-end"
+                              }
+                              subContainerClassName={"page-item"}
+                              activeClassName={"page-item active"}
+                              pageLinkClassName={"page-link"}
+                              nextLinkClassName={"page-link"}
+                              previousLinkClassName={"page-link"}
+                              nextClassName={"page-item"}
+                              previousClassName={"page-item"}
+                              disabledClassName={"disabled"}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -225,6 +278,9 @@ const mapDispatchToProps = dispatch => {
     },
     showNotification: (message, type) => {
       dispatch(showNotification(message, type));
+    },
+    getWaitingApprovalList: (params, callback) => {
+      dispatch(getWaitingApprovalList(params, callback));
     }
   };
 };

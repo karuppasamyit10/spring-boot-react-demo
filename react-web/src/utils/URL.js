@@ -30,7 +30,7 @@ module.exports = {
   COMMON: 'api/public/common',
   CHANGEPASSWORD: 'changePassword',
   UPDATEPASSWORD: 'updatePassword',
-  PROFILE: 'api/user/profile',
+  PROFILE: 'api/user/get/profile',
   ADVANCED_SEARCH: 'api/advanced_search',
   CAR_MASTER_DATA: 'api/public/vehicle/master_data',
   GET_DASHBOARD_DATA: 'api/public/dashboard',

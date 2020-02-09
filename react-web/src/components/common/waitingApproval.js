@@ -133,9 +133,9 @@ class waitingApproval extends Component {
                           {userList && userList.length ? (
                             userList.map((list, index) => {
                               return (
-                                <tr onClick={() => { this.searchDetails(list.vehicleId) }} style={{ cursor: 'pointer' }}>
+                                <tr style={{ cursor: 'pointer' }}>
                                   <th scope="row">{offset + index + 1}</th>
-                                  <td>
+                                  <td onClick={() => { this.searchDetails(list.vehicleId) }}>
                                     {list.vehicleName ? list.vehicleName : ""}
                                   </td>
                                   <td>

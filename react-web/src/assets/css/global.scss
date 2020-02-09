@@ -2,7 +2,7 @@
 @import 'partials/mixins';
 body{
     background: $white;
-    padding-top: 89px;
+    padding-top: 129px;
     @include max-767{
         padding-top: 85px;
     }
@@ -205,3 +205,257 @@ a,button,input,textarea,select,option{
         color: $grey;
     }
 }
+
+.table td, .table th{
+    vertical-align: middle;
+}
+
+.quickmenu{
+    .dropdown-menu{
+        padding: 10px;
+        background: $white;
+        div{
+            font-size: 14px;
+            background: $grey2;
+            padding: 5px;
+        }
+    }
+}
+
+.navbar .logo-wrap .navbar-brand{
+    top: 20px;
+    @include max-767(){
+        top: 0px;
+    }
+}
+
+.floatingbox{
+    width: 122px;
+    height: auto;
+    position: fixed;
+    top: 200px;
+    right: 40px;
+    border: 1px solid #ccc;
+    z-index: 9999;
+    background: $white;
+    &:before{
+        content:"";
+        position: absolute;
+        top: -5px;
+        left: 0px;
+        width: 100%;
+        height: 1px;
+        border-top: 5px solid $green;
+    }
+    .links{
+        a{
+            display: block;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+            color: $black;
+            text-decoration: none;
+            font-size: 13px;
+            &:last-child{
+                border-bottom: 0px;
+            }
+        }
+    }
+}
+
+.stepsbox{
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.membershiptable{
+    margin-top: 30px;
+    .table
+    {
+        .thead-light{
+            th{
+                color: #495057;
+                background-color:$grey2;
+                border-color: #dee2e6;
+            }
+        }
+    }
+    .table{
+        tbody{
+            .title{
+                background: $grey2;
+            }
+        }
+    }
+    .table.addColors{
+        tbody{
+            td.expertBg{
+                background: #FFF3F4;
+            }
+            td.superBg{
+                background: #FCF6D5;
+            }
+        }
+    }
+}
+
+.text-strike{
+    text-decoration: line-through;
+}
+
+.vehiclegrid{
+    height: 280px;
+    position: relative;
+    background: $grey2;
+    border: 1px solid #ccc;
+    padding: 0px 10px;
+    @include transition(background 0.3s linear);
+    color: $black;
+    cursor: pointer;
+    &:focus,&:hover{
+        text-decoration: none;
+        outline: 0px;
+        background: $white;
+        color: $black;
+    }
+}
+
+.shipbanner{
+    width: 100%;
+    min-height: 200px;
+    background: url("../img/bg_shippingSchedule.png") no-repeat top center;
+    background-size: cover;
+    padding: 30px 30px;
+    .para1{
+        margin-top: 15px;
+    }
+    .para2{
+        color: $grey3;
+        margin-top: 20px;
+    }
+}
+
+.ship_filter{
+    background: $grey2;
+    border: 1px solid #ccc;
+    padding: 15px;
+    .btn-wrap{
+        @include max-767{
+            margin-top: 20px;
+        }
+    }
+}
+
+.switch_shipping{
+    .nav-item{
+        padding: 0px 10px;
+    }
+    .nav-link{
+        border: 1px solid #ccc;
+        color: $black;
+    }
+    .nav-link.active{
+        border: 1px solid $blue;
+        color: $white;
+        background-color: $blue;
+    }
+}
+
+.photogrids{
+    .photobox{
+        margin-bottom: 30px;
+        a{
+        border: 1px solid #ccc;
+        color: $grey;
+        &:hover,&:focus{
+            text-decoration: none;
+        }
+        .caption{
+            padding: 15px;
+        }
+        }
+    }
+}
+.sidelinks
+{
+    .sllinks {
+        li{
+            .sidebarsubmenu{
+                padding-left: 0px;
+                margin-left: 0px;
+                background: $grey2;
+                border: 1px solid $grey;
+                border-top: 0px;
+                li{
+                    a{
+                        border: 0px;
+                        color: $grey;
+                    }
+                }
+                li.active{
+                    a{
+                        background: lighten($color: $green, $amount: 20);
+                        color: $white;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.imgpreview{
+    margin-top: 20px;
+    .prevfile{
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border: 1px solid $grey;
+        text-align: center;
+        @include relative;
+        max-width: 200px;
+        margin: 0px 10px;
+        .removefile{
+            @include absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 20px;
+    color: #fff;
+    background: $grey;
+    line-height: 23px;
+    display: block;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+        }
+    }
+}
+
+.rbform{
+    height: 700px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 20px;
+}
+
+/* width */
+.rbform::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  .rbform::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  .rbform::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  .rbform::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+

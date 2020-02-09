@@ -14,9 +14,12 @@ import Background2 from "../assets/img/search/hyundai.jpg";
 import Background3 from "../assets/img/search/kia2.jpg";
 import $ from "jquery";
 import { PATH } from "../utils/Constants";
-import { getVehicleDetails, changeProuctApproval } from "../actions/searchAction";
+import {
+  getVehicleDetails,
+  changeProuctApproval
+} from "../actions/searchAction";
 import { showNotification } from "../actions/NotificationAction";
-import URL from '../utils/URL';
+import URL from "../utils/URL";
 
 class searchDetail extends Component {
   constructor(props) {
@@ -68,7 +71,7 @@ class searchDetail extends Component {
     this.props.changeProuctApproval(params, response => {
       if (response && response.response_code === 0) {
         this.props.showNotification("Updated successfully", "success");
-        this.waitingList()
+        this.waitingList();
       } else {
         this.props.showNotification(response.response_message, "error");
       }
@@ -76,6 +79,7 @@ class searchDetail extends Component {
   };
 
   render() {
+    const { userInfo } = store.get("userSession");
     const { vehicleDetails } = this.state;
     return (
       <React.Fragment>
@@ -108,12 +112,11 @@ class searchDetail extends Component {
 
         <section class="search_detail">
           <div class="container">
-            <div class="row mt-5 align-items-center">
-            </div>
+            <div class="row mt-5 align-items-center"></div>
             <div class="carname mt-5 text-center">
               <div class="head1">
                 {this.state.vehicleDetails &&
-                  this.state.vehicleDetails.vehicleName
+                this.state.vehicleDetails.vehicleName
                   ? this.state.vehicleDetails.vehicleName
                   : ""}
               </div>
@@ -122,7 +125,9 @@ class searchDetail extends Component {
             <div class="row mt-3">
               <div class="col-lg-7">
                 <div class="cargallery">
-                  {vehicleDetails && vehicleDetails.vehiclePhotosList && vehicleDetails.vehiclePhotosList.length ?
+                  {vehicleDetails &&
+                  vehicleDetails.vehiclePhotosList &&
+                  vehicleDetails.vehiclePhotosList.length ? (
                     <div class="carsbig">
                       <Carousel>
                         <div class="imgs">
@@ -134,7 +139,7 @@ class searchDetail extends Component {
                             allowfullscreen
                           ></iframe>
                         </div>
-                        {vehicleDetails.vehiclePhotosList.map((item) => {
+                        {vehicleDetails.vehiclePhotosList.map(item => {
                           return (
                             <div class="imgs zoomit">
                               <img
@@ -143,15 +148,18 @@ class searchDetail extends Component {
                                 alt=""
                               />
                               <div class="clickdrag">
-                                <i class="fas fa-mouse"></i> Click and drag to zoom
-                                image
-                          </div>
+                                <i class="fas fa-mouse"></i> Click and drag to
+                                zoom image
+                              </div>
                             </div>
-                          )
+                          );
                         })}
                       </Carousel>
                       <div></div>
-                    </div> : " "}
+                    </div>
+                  ) : (
+                    <div className="text-center">No Images added</div>
+                  )}
                 </div>
               </div>
               <div class="col-lg-5">
@@ -401,26 +409,40 @@ class searchDetail extends Component {
                       </tr>
                     </tbody>
                   </table>
-                  <div
-                    class="btn-group"
-                    role="group"
-                    aria-label="Basic example"
-                  >
-                    <button
-                      type="button"
-                      class="btn btn-primary mr-2"
-                      onClick={() => { this.changeProuctApproval(vehicleDetails.vehicleId, 1) }}
+                  {userInfo && userInfo.userType === "ADMIN" ? (
+                    <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Basic example"
                     >
-                      Approve
-                   </button>
-                    <button
-                      type="button"
-                      class="btn btn-danger"
-                      onClick={() => { this.changeProuctApproval(vehicleDetails.vehicleId, -1) }}
-                    >
-                      Un Approve
-                                      </button>
-                  </div>
+                      <button
+                        type="button"
+                        class="btn btn-primary mr-2"
+                        onClick={() => {
+                          this.changeProuctApproval(
+                            vehicleDetails.vehicleId,
+                            1
+                          );
+                        }}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger"
+                        onClick={() => {
+                          this.changeProuctApproval(
+                            vehicleDetails.vehicleId,
+                            -1
+                          );
+                        }}
+                      >
+                        Un Approve
+                      </button>
+                    </div>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div class="negotiation border-bottom pt-5 pb-5">
                   <div class="head3 medium">Negotiation</div>

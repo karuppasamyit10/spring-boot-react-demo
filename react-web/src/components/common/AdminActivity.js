@@ -10,7 +10,6 @@ import {
 } from "../../actions/searchAction";
 import UserList from "./userList";
 import MyAccount from "./myAccount";
-import ProductList from "./ProductList";
 import WaitingApprovalList from "./waitingApproval";
 
 class AdminActivity extends Component {
@@ -25,9 +24,10 @@ class AdminActivity extends Component {
       pageNo: 1,
       itemsPerPage: 5,
       total: 0,
-      activeTab: this.props.location.state && this.props.location.state.activeTab
-      ? this.props.location.state.activeTab
-      : 0,
+      activeTab:
+        this.props.location.state && this.props.location.state.activeTab
+          ? this.props.location.state.activeTab
+          : 0
     };
   }
 
@@ -86,7 +86,7 @@ class AdminActivity extends Component {
   };
 
   render() {
-    const { savedSearchList, activeTab } = this.state;
+    const { activeTab } = this.state;
     return (
       <React.Fragment>
         <section class="breadcrumb_wrap">
@@ -109,11 +109,7 @@ class AdminActivity extends Component {
             <div class="row">
               <div class="col-md-3">
                 <div class="sidelinks">
-                  <div
-                    class="slhead text-center medium head3"
-                  >
-                    My Account
-                  </div>
+                  <div class="slhead text-center medium head3">My Account</div>
                   <ul class="sllinks medium">
                     <li class={activeTab === 0 ? "active" : ""}>
                       <a
@@ -160,14 +156,14 @@ class AdminActivity extends Component {
               {}
               <div class="col-md-9 form-wrap">
                 {activeTab === 2 ? (
-                  <MyAccount {...this.props}/>
+                  <MyAccount {...this.props} />
                 ) : activeTab === 0 ? (
-                  <UserList {...this.props}/>
+                  <UserList {...this.props} />
                 ) : activeTab === 1 ? (
-                  <WaitingApprovalList {...this.props}/>
+                  <WaitingApprovalList {...this.props} />
                 ) : (
-                        ""
-                      )}
+                  ""
+                )}
               </div>
             </div>
           </div>
