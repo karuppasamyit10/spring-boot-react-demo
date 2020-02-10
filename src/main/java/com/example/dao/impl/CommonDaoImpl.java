@@ -197,7 +197,7 @@ public class CommonDaoImpl implements CommonDao {
 				return CommonUtil.wrapResultResponse(methodName, 5, "Email already exists", null);
 			}
 			
-			userObj = userRepository.findByMobileNumber(userRegistrationBean.getEmail());
+			userObj = userRepository.findByMobileNumber(userRegistrationBean.getMobileNumber());
 			if(userObj!=null) {
 				return CommonUtil.wrapResultResponse(methodName, 6, "Mobile already exists", null);
 			}
@@ -206,6 +206,7 @@ public class CommonDaoImpl implements CommonDao {
 			userObj.setUserName(userRegistrationBean.getUserName());
 			userObj.setEmail(userRegistrationBean.getEmail());
 			userObj.setCreatedDate(createdDate);
+			userObj.setMobileNumber(userRegistrationBean.getMobileNumber());
 			userObj.setUserType("USER");
 			userObj.setVerify(true);
 			userObj.setMembershipId(0);

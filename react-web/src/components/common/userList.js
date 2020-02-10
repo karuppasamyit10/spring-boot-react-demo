@@ -128,7 +128,7 @@ class userList extends Component {
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">User Name</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Mobile</th>
                             <th scope="col">Action</th>
@@ -141,7 +141,7 @@ class userList extends Component {
                               return (
                                 <tr>
                                   <th scope="row">{offset + index + 1}</th>
-                                  <td>{user.name}</td>
+                                  <td>{user.displayName}</td>
                                   <td>{user.email}</td>
                                   <td>{user.mobile_number}</td>
                                   <td>{user.membershipId === 1 ? 'BASIC':user.membershipId === 2 ?'SILVER':

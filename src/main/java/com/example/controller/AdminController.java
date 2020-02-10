@@ -1032,7 +1032,7 @@ public class AdminController {
 				params.put("userId", userObj[0]);
 				params.put("membershipId", userObj[4]);
 				params.put("email", userObj[3]);
-				params.put("displayName", userObj[7]);
+				params.put("displayName", userObj[7] +" "+userObj[8]);
 				params.put("mobile_number", userObj[10]);
 				params.put("photo", commonConfig.getHostBaseUrl()+userObj[9]);
 				userListObj.add(params);
