@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.bean.VehicleRegisterBean;
 import com.example.dao.UserDao;
 import com.example.util.CommonUtil;
 
@@ -64,6 +65,25 @@ public class UserController {
 			e.printStackTrace();
 			logger.info("Controller==>Exception==>getUserProfile<==");
 			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller getUserProfile", null);
+		}
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/get/products", produces = "application/json")
+	@ResponseBody
+	public Map<?, ?> getAllProductsByUser(VehicleRegisterBean vehicleRegisterBean) throws Exception {
+		logger.info("Controller==>Enter==>getAllProductsByUser<==");
+		String methodName = "GET ALL PRODUCTS BY USER";
+		long userId = CommonUtil.getUserId();
+		try {
+			if(userId>0) {
+				return userDao.getAllProductsByUser(userId,vehicleRegisterBean);
+			} else  {
+				return  CommonUtil.wrapResultResponse(methodName, 1, "Invalid access token", null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("Controller==>Exception==>getAllProductsByUser<==");
+			return  CommonUtil.wrapResultResponse(methodName, 99, "Error occured into controller getAllProductsByUser", null);
 		}
 	}
 }

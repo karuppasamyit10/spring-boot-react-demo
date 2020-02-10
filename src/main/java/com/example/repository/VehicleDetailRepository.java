@@ -33,5 +33,7 @@ public interface VehicleDetailRepository extends JpaRepository<VehicleDetail, Lo
 	VehicleDetail findByVehicleIdAndApprovedStatusAndIsDeleted(long vehicleId, int approvedStatus, int isDeleted);
 	
 	Page<VehicleDetail> findByApprovedStatusAndIsDeletedOrderByVehicleId(int approvedStatus, int isDeleted, Pageable pageable);
+	
+	Page<VehicleDetail> findByUserIdOrderByVehicleId(long vehicleId, Pageable pageable);
 		
 }
