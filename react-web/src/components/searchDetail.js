@@ -25,6 +25,7 @@ class searchDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userInfo : store.get("userSession"),
       vehicleDetails: {},
       vehicleId:
         this.props.location.state && this.props.location.state.vehicleId
@@ -79,8 +80,8 @@ class searchDetail extends Component {
   };
 
   render() {
-    const { userInfo } = store.get("userSession");
-    const { vehicleDetails } = this.state;
+
+    const { vehicleDetails, userInfo } = this.state;
     return (
       <React.Fragment>
         <section class="breadcrumb_wrap">
