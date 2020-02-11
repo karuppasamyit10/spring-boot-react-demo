@@ -47,4 +47,5 @@ module.exports = {
   GET_APPROVAL_LIST: '/api/admin/get/product/approval/list',
   CHANGE_PRODUCT_APPROVAL: '/api/admin/update/product/approval',
   CHANGE_MEMBERSHIP: '/api/admin/update/membership',
+  GET_MY_PRODUCT_LIST: '/api/user/get/products'
 }; 

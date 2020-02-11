@@ -11,6 +11,8 @@ import {
 } from "../../actions/searchAction";
 import ReactPaginate from "react-paginate";
 
+import { getMyProductList } from "../../actions/userAction";
+
 class ProductList extends Component {
   constructor(props) {
     super(props);
@@ -38,20 +40,20 @@ class ProductList extends Component {
       top: 0,
       behavior: "smooth"
     });
-    this.getApprovalList();
+    this.getMyProductList();
   }
 
-  getApprovalList = () => {
+  getMyProductList = () => {
     const { search, pageNo, itemsPerPage } = this.state;
     const params = {
       pageNo,
       itemsPerPage
     };
-    this.props.getWaitingApprovalList(params, response => {
+    this.props.getMyProductList(params, response => {
       console.log(response);
       if (response && response.response_code === 0) {
-        const { totalRecords, pendingApprovalList } = response.response;
-        this.setState({ total: totalRecords, userList: pendingApprovalList });
+        const { totalRecords, vehicleDetailList } = response.response;
+        this.setState({ total: totalRecords, userList: vehicleDetailList });
       }
     });
   };
@@ -198,9 +200,7 @@ class ProductList extends Component {
                                         type="button"
                                         class="btn btn-primary"
                                         onClick={() => {
-                                          this.searchDetails(
-                                            list.vehicleId,
-                                          );
+                                          this.searchDetails(list.vehicleId);
                                         }}
                                       >
                                         View
@@ -281,6 +281,9 @@ const mapDispatchToProps = dispatch => {
     },
     getWaitingApprovalList: (params, callback) => {
       dispatch(getWaitingApprovalList(params, callback));
+    },
+    getMyProductList: (params, callback) => {
+      dispatch(getMyProductList(params, callback));
     }
   };
 };

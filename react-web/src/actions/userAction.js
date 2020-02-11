@@ -127,6 +127,19 @@ export function getProfileInfo(object, callBack) {
   };
 }
 
+export function getMyProductList(object, callBack) {
+  return function(dispatch) {
+    Client.get(URL.GET_MY_PRODUCT_LIST, object, true)
+      .then(response => {
+        myLog("====GET MY PRODUCT LIST response===::::", response);
+        callBack(response);
+      })
+      .catch(error => {
+        myLog("====GET MY PRODUCT LIST response===????", error);
+      });
+  };
+}
+
 export function getCommonDetails(callback) {
   Client.get(URL.COMMON, null, false)
     .then(response => {
