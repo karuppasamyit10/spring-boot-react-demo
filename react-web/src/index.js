@@ -74,11 +74,14 @@ import advertise from "./components/common/advertise";
 import membershipFee from "./components/common/membershipFee";
 import registeredItems from "./components/common/registeredItems";
 
-import productRegistrationForm from './components/common/ProductRegistrationForm';
+import productRegistrationForm from "./components/common/ProductRegistrationForm";
 import ProductList from "./components/common/ProductList";
 import ApprovalList from "./components/common/ApprovalList";
 import AdminActivity from "./components/common/AdminActivity";
-
+import shippingPhoto from "./components/common/shippingPhoto";
+import shippingSchedule from "./components/common/shippingSchedule";
+import typesOfTransport from "./components/common/typesOfTransport";
+import shippingPhotoDetail from "./components/common/shippingPhotoDetail";
 
 const CustomRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -101,11 +104,18 @@ ReactDOM.render(
           <CustomRoute exact path="/" component={dashboard} />
           <CustomRoute exact path="/signin" component={login} />
           <CustomRoute exact path="/registration" component={registration} />
-          <CustomRoute exact path="/product-registration" component={productRegistrationForm} />
+          <CustomRoute
+            exact
+            path="/product-registration"
+            component={productRegistrationForm}
+          />
           <CustomRoute exact path="/product-list" component={ProductList} />
           <CustomRoute exact path="/admin/activity" component={AdminActivity} />
-          <CustomRoute exact path="/product-approval-list" component={ApprovalList} />
-          
+          <CustomRoute
+            exact
+            path="/product-approval-list"
+            component={ApprovalList}
+          />
           <CustomRoute exact path="/dashboard/search" component={search} />
           <CustomRoute
             exact
@@ -125,12 +135,8 @@ ReactDOM.render(
             path="/about-us/what-we-do/car-accessories"
             component={carAccessories}
           />
-           <CustomRoute
-            exact
-            path="/membership-fee"
-            component={membershipFee}
-          />
-           <CustomRoute
+          <CustomRoute exact path="/membership-fee" component={membershipFee} />
+          <CustomRoute
             exact
             path="/registered-items"
             component={registeredItems}
@@ -175,6 +181,27 @@ ReactDOM.render(
             exact
             path="/about-us/what-we-do/container-shipping"
             component={containerShipping}
+          />
+          <CustomRoute
+            exact
+            path="/about-us/what-we-do/container-shipping/shipping-photo"
+            component={shippingPhoto}
+          />
+          <CustomRoute
+            exact
+            path="/about-us/what-we-do/container-shipping/shipping-photo-detail"
+            component={shippingPhotoDetail}
+          />
+        
+          <CustomRoute
+            exact
+            path="/about-us/what-we-do/container-shipping/shipping-schedule"
+            component={shippingSchedule}
+          />
+          <CustomRoute
+            exact
+            path="/about-us/what-we-do/container-shipping/types-of-transport"
+            component={typesOfTransport}
           />
           <CustomRoute
             exact

@@ -4,7 +4,7 @@ import { AppWrapper } from "../public/AppWrapper";
 import { PATH } from "../../utils/Constants";
 import { Link } from "react-router-dom";
 
-class howToUseHgs extends Component {
+class shippingSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -15,7 +15,7 @@ class howToUseHgs extends Component {
   };
 
   componentDidMount() {
-    document.title = "Auto Harasow | How To Use Hgs";
+    document.title = "Auto Harasow | Shipping Schedule";
   }
 
   render() {
@@ -32,10 +32,10 @@ class howToUseHgs extends Component {
                   <Link to={PATH.ABOUT_US}>About Us</Link>
                 </li>
                 <li class="breadcrumb-item">
-                  <Link to={PATH.HOW_TO_ORDER}>How to order</Link>
+                  <Link to={PATH.WHAT_WE_DO}>What we do</Link>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                  How to use H.G.S
+                  Container Shipping
                 </li>
               </ol>
             </nav>
@@ -47,37 +47,27 @@ class howToUseHgs extends Component {
             <div class="row">
               <div class="col-md-3">
                 <div class="sidelinks">
-                  <div class="slhead text-center medium head3">
-                    Buy It Safely
-                  </div>
+                  <div class="slhead text-center medium head3">Shipping</div>
                   <ul class="sllinks medium">
                     <li class="active">
-                      <Link to={PATH.HOW_TO_USE_HGS}>
-                        How to use H.G.S.
+                      <Link to={PATH.SHIPPING_SCHDULE}>
+                        Shipping Schedule
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
                       </Link>
                     </li>
                     <li>
-                      <Link to={PATH.PAYMENT}>
-                        Payment
+                      <Link to={PATH.SHIPPING_PHOTOS}>
+                        Shipping Photos
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
                       </Link>
                     </li>
                     <li>
-                      <Link to={PATH.FAQ}>
-                        FAQ
-                        <span>
-                          <i class="fas fa-chevron-right"></i>
-                        </span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={PATH.CONTACT_STAFF}>
-                        Contact our staff
+                      <Link to={PATH.SHIPPING_TRANSPORT_TYPES}>
+                        Types of Shipping
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
@@ -87,51 +77,169 @@ class howToUseHgs extends Component {
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="head1 medium">Buy It Safely</div>
-                <div class="row mt-5">
-                  <div class="col-12">
-                    <div class="head2 mb-3 bold text-center">
-                      What is “Buy it Safely!”(B.I.S) ?
-                    </div>
-                    <p class="para1">
-                      “Buy it Safely!” is Autowini's Safe Payment & Shipping
-                      Service whereby Autowini acts as a third party between the
-                      buyer and seller in order to make the purchase 100% safe
-                      and easy for the buyer. Autowini keeps your money, ships
-                      the item on time and takes care of your online transaction
-                      throughout the whole process safely all at a low cost!
-                    </p>
+                <div class="head1 medium">Shipping Schedule</div>
+
+                <div class="shipbanner mt-4">
+                  <div class="head1 white">
+                    Check the fastest shipping schedule to your port!
+                  </div>
+                  <div class="para1 white">
+                    You can search shipping schedules by the arrival port. We
+                    hope you check the fastest shipping schedule and book on the
+                    fast vessel.
+                  </div>
+                  <div class="para2">
+                    * The results for the last three months will be shown.
                   </div>
                 </div>
                 <div class="dotspacer"></div>
-
-                <div class="row mt-4">
-                  <div class="col-md-12 text-center">
-                    <img
-                      src={require("../../assets/img/about/how-to-order/bis_img_75.png")}
-                      class="img-fluid"
-                      alt=""
-                    />
-                    <p class="head3 bold">How to Use H.G.S.</p>
-                    <p class="para1">
-                      We deliver our items on time with an all-in-one order
-                      tracking system.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="dotspacer"></div>
-                <div class="row mt-4">
-                  <div class="col-12">
-                    <div class="head2 medium">Need Help?</div>
-                    <div class="greybox mt-4">
-                      <p class="para1">
-                        If you have any further questions, contact us at any
-                        time! We are here to support you.
-                      </p>
-                      <p class="para1">Email : bis@harasow.com</p>
+                <div class="ship_filter">
+                  <div class="row align-items-end">
+                    <div class="col-lg-5 col-md-4 col-sm-6">
+                      <div class="form-group row mb-0">
+                        <label
+                          for="shipDeparture"
+                          class="col-lg-5 col-form-label text-center"
+                        >
+                          Departure :
+                        </label>
+                        <div class="col-lg-7">
+                          <select
+                            name="shipDeparture"
+                            id="shipDeparture"
+                            class="form-control"
+                          >
+                            <option value="0" selected>
+                              Select
+                            </option>
+                            <option value="">S.Korea</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-5 col-md-4 col-sm-6">
+                      <div class="form-group row mb-0">
+                        <label
+                          for="shipDeparture"
+                          class="col-lg-5 col-form-label text-center"
+                        >
+                          Arrival :
+                        </label>
+                        <div class="col-lg-7">
+                          <select
+                            name="shipDeparture"
+                            id="shipDeparture"
+                            class="form-control"
+                          >
+                            <option value="0" selected>
+                              Select
+                            </option>
+                            <option value="">India</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-12">
+                      <div class="btn-wrap text-center">
+                        <input
+                          type="submit"
+                          class="btn btn-primary btn-block"
+                          value="Search"
+                        />
+                      </div>
                     </div>
                   </div>
+                </div>
+                <div class="dotspacer"></div>
+                <div class="row py-4">
+                  <div class="col-lg-5">
+                    <div class="para1 grey">
+                      Search Result : <span class="bold">0</span> schedules
+                      found
+                    </div>
+                  </div>
+                  <div class="col-lg-7">
+                    <div class="para1 grey">
+                      * Schedules are subject to be changed with or without
+                      notice.
+                    </div>
+                  </div>
+                </div>
+                <div class="spacer1"></div>
+                <div class="table-responsive">
+                  <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Vessel Name &amp; Voy No.</th>
+                        <th>Vessel Type</th>
+                        <th>Line</th>
+                        <th>Port of Loading</th>
+                        <th>Port of Destination</th>
+                        <th>Estimated time of departure</th>
+                        <th>Estimated time of arrival</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>VIKING EMERALD V.014</td>
+                        <td>Ro-Ro</td>
+                        <td></td>
+                        <td>
+                          <strong>S.Korea</strong>
+                          <br />
+                          Masan
+                        </td>
+                        <td>
+                          <strong>Myanmar</strong>
+                          <br />
+                          Yangon
+                        </td>
+                        <td>2020.02.07</td>
+                        <td>2020.03.03</td>
+                      </tr>
+                      <tr>
+                        <td>VIKING EMERALD V.014</td>
+                        <td>Ro-Ro</td>
+                        <td></td>
+                        <td>
+                          <strong>S.Korea</strong>
+                          <br />
+                          Masan
+                        </td>
+                        <td>
+                          <strong>Myanmar</strong>
+                          <br />
+                          Yangon
+                        </td>
+                        <td>2020.02.07</td>
+                        <td>2020.03.03</td>
+                      </tr>
+                      <tr>
+                        <td>VIKING EMERALD V.014</td>
+                        <td>Ro-Ro</td>
+                        <td></td>
+                        <td>
+                          <strong>S.Korea</strong>
+                          <br />
+                          Masan
+                        </td>
+                        <td>
+                          <strong>Myanmar</strong>
+                          <br />
+                          Yangon
+                        </td>
+                        <td>2020.02.07</td>
+                        <td>2020.03.03</td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="7">
+                          We are very sorry. There's no available data at the
+                          moment.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -143,4 +251,4 @@ class howToUseHgs extends Component {
   }
 }
 
-export default AppWrapper(howToUseHgs, null, null);
+export default AppWrapper(shippingSchedule, null, null);

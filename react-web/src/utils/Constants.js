@@ -39,6 +39,12 @@ module.exports = {
 
     SPECIAL_SERVICES: "/about-us/how-we-work/special-services",
     SHIPPING: "/about-us/what-we-do/container-shipping",
+
+    SHIPPING_SCHDULE: '/about-us/what-we-do/container-shipping/shipping-schedule',
+    SHIPPING_PHOTOS: '/about-us/what-we-do/container-shipping/shipping-photo',
+    SHIPPING_TRANSPORT_TYPES: '/about-us/what-we-do/container-shipping/types-of-transport',
+    SHIPPING_PHOTO_DETAIL: '/about-us/what-we-do/container-shipping/shipping-photo-detail',
+
     MEMBERSHIPFEE: "/membership-fee",
     PRODUCT_REGISTRATION: "/product-registration",
     REGISTEREDITEMS: "/registered-items",

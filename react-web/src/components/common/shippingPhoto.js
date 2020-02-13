@@ -50,28 +50,28 @@ class shippingPhoto extends Component {
                   <div class="slhead text-center medium head3">Shipping</div>
                   <ul class="sllinks medium">
                     <li>
-                      <a href="shipping-schedule.html">
+                      <Link to={PATH.SHIPPING_SCHDULE}>
                         Shipping Schedule
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
-                      </a>
+                      </Link>
                     </li>
                     <li class="active">
-                      <a href="shipping-photos.html">
+                      <Link to={PATH.SHIPPING_PHOTOS}>
                         Shipping Photos
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="ro-ro-vessel.html">
+                      <Link to={PATH.SHIPPING_TRANSPORT_TYPES}>
                         Types of Shipping
                         <span>
                           <i class="fas fa-chevron-right"></i>
                         </span>
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -151,9 +151,9 @@ class shippingPhoto extends Component {
                   <div class="row">
                     <div class="col-md-6">
                       <div class="photobox">
-                        <a href="shipping-photos-detail.html" class="d-block">
+                        <Link to={PATH.SHIPPING_PHOTO_DETAIL} className="d-block">
                           <img
-                            src="assets/img/LP202001210000515042560.jpg"
+                            src={require("../../assets/img/LP202001210000515042560.jpg")}
                             class="img-fluid"
                             alt=""
                           />
@@ -161,14 +161,14 @@ class shippingPhoto extends Component {
                             <div class="head2 bold">Latest Yard Photos</div>
                             <div class="text-right para2">2020 - 01 - 21</div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="photobox">
-                        <a href="shipping-photos-detail.html" class="d-block">
+                      <Link to={PATH.SHIPPING_PHOTO_DETAIL} className="d-block">
                           <img
-                            src={require('../../assets/img/LP202001210000515042560.jpg')}
+                            src={require("../../assets/img/LP202001210000515042560.jpg")}
                             class="img-fluid"
                             alt=""
                           />
@@ -176,14 +176,14 @@ class shippingPhoto extends Component {
                             <div class="head2 bold">Latest Yard Photos</div>
                             <div class="text-right para2">2020 - 01 - 21</div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="photobox">
-                        <a href="shipping-photos-detail.html" class="d-block">
+                      <Link to={PATH.SHIPPING_PHOTO_DETAIL} className="d-block">
                           <img
-                            src={require('../../assets/img/LP202001210000515042560.jpg')}
+                            src={require("../../assets/img/LP202001210000515042560.jpg")}
                             class="img-fluid"
                             alt=""
                           />
@@ -191,14 +191,14 @@ class shippingPhoto extends Component {
                             <div class="head2 bold">Latest Yard Photos</div>
                             <div class="text-right para2">2020 - 01 - 21</div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="photobox">
-                        <a href="shipping-photos-detail.html" class="d-block">
+                      <Link to={PATH.SHIPPING_PHOTO_DETAIL} className="d-block">
                           <img
-                           src={require('../../assets/img/LP202001210000515042560.jpg')}
+                            src={require("../../assets/img/LP202001210000515042560.jpg")}
                             class="img-fluid"
                             alt=""
                           />
@@ -206,7 +206,7 @@ class shippingPhoto extends Component {
                             <div class="head2 bold">Latest Yard Photos</div>
                             <div class="text-right para2">2020 - 01 - 21</div>
                           </div>
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
