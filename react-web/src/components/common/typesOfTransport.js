@@ -23,6 +23,7 @@ class typesOfTransport extends Component {
   }
 
   render() {
+    const { tab } = this.state;
     return (
       <React.Fragment>
         <section class="breadcrumb_wrap">
@@ -102,7 +103,7 @@ class typesOfTransport extends Component {
                     <ul class="nav nav-pills nav-fill switch_shipping">
                       <li class="nav-item">
                         <a
-                          class="nav-link active medium"
+                          class={`nav-link medium ${tab === 1 ? "active" : ""}`}
                           href="#"
                           onClick={() => {
                             this.setState({ tab: 1 });
@@ -113,7 +114,7 @@ class typesOfTransport extends Component {
                       </li>
                       <li class="nav-item ">
                         <a
-                          class="nav-link medium"
+                          class={`nav-link medium ${tab === 2 ? "active" : ""}`}
                           href="#"
                           onClick={() => {
                             this.setState({ tab: 2 });

@@ -92,6 +92,9 @@ class Footer extends Component {
                       <Link to={PATH.REGISTEREDITEMS}>Place an AD</Link>
                     </li>
                     <li>
+                      <Link to={PATH.SHIPPING_SCHDULE}>Shipping</Link>
+                    </li>
+                    <li>
                       <Link to={PATH.MEMBERSHIPFEE}>Membership Fee</Link>
                     </li>
                   </ul>
